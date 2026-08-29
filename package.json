@@ -9,6 +9,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@imagekit/nodejs": "^7.11.0",
     "@supabase/ssr": "^0.12.5",
