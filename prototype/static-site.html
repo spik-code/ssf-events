@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en" data-theme="cotton">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSF Events — Wedding &amp; Event Decor · Kolar &amp; Bengaluru</title>
+<meta name="description" content="SSF Events (Sri Sai Flora Enterprises) — stage, mandap and celebration decor for weddings, receptions, engagements, haldi, baby showers and birthdays across Kolar, Bengaluru and Karnataka.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   SSF EVENTS — Sri Sai Flora Enterprises
+   Wedding & event decor · Kolar / Bengaluru, Karnataka
+   Built on the Meridian design system: Libre Caslon + Instrument
+   Sans + IBM Plex Mono, one spacing scale, two palettes.
+   ============================================================ */
+
+:root{
+  /* Cotton — cream cardstock paper, ceremonial red. Default. */
+  --paper:#ECEBE6;  --card:#F7F6F2;  --wash:#E4E0D6;
+  --ink:#1C1B19;    --ink-soft:#5F5D57;  --line:#D3D1C8;
+  --accent:#B4322A; --accent-ink:#FBF4F2; --accent-line:#D98A83;
+  --gold:#9A7A2E;
+  --shadow:0 1px 2px rgba(20,19,15,.04), 0 18px 44px -26px rgba(20,19,15,.22);
+  --tile:linear-gradient(158deg,#EFEEE8,#F7F6F2);
+  color-scheme:light;
+}
+:root[data-theme="candlelight"]{
+  /* Candlelight — deep indigo ink, candle gold. Matches the badge. */
+  --paper:#15151D;  --card:#1E1E27;  --wash:#282413;
+  --ink:#ECE9E1;    --ink-soft:#A6A297;  --line:#33333F;
+  --accent:#E6A23C; --accent-ink:#1C1509; --accent-line:#7A5C2C;
+  --gold:#E6C07A;
+  --shadow:0 1px 2px rgba(0,0,0,.34), 0 26px 54px -24px rgba(0,0,0,.7);
+  --tile:linear-gradient(158deg,#22222C,#1A1A22);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-padding-top:78px}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 1.0625rem/1.62 "Instrument Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
+  transition:background .4s ease, color .4s ease;
+}
+img{max-width:100%; display:block}
+h1,h2,h3,p,figure,blockquote,ul{margin:0}
+a{color:inherit}
+button{font:inherit; color:inherit; background:none; border:0}
+::selection{background:var(--accent); color:var(--accent-ink)}
+
+.wrap{max-width:1180px; margin:0 auto; padding-inline:clamp(20px,5vw,56px)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- type roles ---------- */
+.eyebrow{
+  display:flex; align-items:center; gap:10px;
+  font:500 .72rem/1.4 "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  text-transform:uppercase; letter-spacing:.15em; color:var(--ink-soft);
+}
+.tick{width:7px; height:7px; background:var(--accent); flex:none; display:inline-block}
+.h1{
+  font:400 clamp(2.5rem,6.2vw,4.7rem)/1.03 "Libre Caslon Display", Georgia, "Times New Roman", serif;
+  letter-spacing:-.012em; text-wrap:balance;
+}
+.h2{
+  font:400 clamp(1.85rem,3.6vw,2.7rem)/1.12 "Libre Caslon Text", Georgia, serif;
+  letter-spacing:-.006em; text-wrap:balance;
+}
+.h3{font:600 1.02rem/1.3 "Instrument Sans", system-ui, sans-serif; letter-spacing:.005em}
+.lede{font-size:1.16rem; line-height:1.55; color:var(--ink-soft); max-width:52ch}
+.note{
+  font:500 .74rem/1.55 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing:.02em; color:var(--ink-soft); max-width:52ch;
+}
+em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; color:var(--accent)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:.55rem; min-height:46px;
+  padding:.85rem 1.4rem; border:1px solid transparent; border-radius:7px;
+  font:500 .78rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  text-transform:uppercase; letter-spacing:.11em; text-decoration:none;
+  cursor:pointer; transition:transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.btn-primary{background:var(--accent); color:var(--accent-ink)}
+.btn-ghost{border-color:var(--ink); color:var(--ink)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn svg{width:15px; height:15px; flex:none}
+
+:where(a,button,select,input,textarea):focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px; border-radius:5px;
+}
+.skip{
+  position:absolute; left:14px; top:-52px; z-index:99;
+  background:var(--ink); color:var(--paper); padding:11px 15px; border-radius:7px;
+  font:500 .78rem/1 "IBM Plex Mono", monospace; transition:top .2s ease;
+}
+.skip:focus{top:14px}
+
+/* ---------- top bar ---------- */
+.bar{position:sticky; top:0; z-index:40; border-bottom:1px solid var(--line); background:var(--paper)}
+@supports (backdrop-filter:blur(6px)){
+  .bar{background:color-mix(in srgb, var(--paper) 84%, transparent); backdrop-filter:blur(10px)}
+}
+.bar-in{display:flex; align-items:center; gap:22px; padding-block:12px}
+.mark{display:flex; align-items:center; gap:12px; text-decoration:none; margin-right:auto}
+.mark .ring{width:30px; height:30px; flex:none}
+.mark .txt{display:flex; flex-direction:column; line-height:1}
+.mark .txt b{
+  font:600 .9rem/1 "IBM Plex Mono", monospace; letter-spacing:.24em; text-transform:uppercase;
+}
+.mark .txt span{
+  font:400 .54rem/1.4 "IBM Plex Mono", monospace; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-soft); margin-top:4px;
+}
+.nav{display:flex; gap:22px}
+.nav a{
+  font:400 .74rem/1 "IBM Plex Mono", monospace; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--ink-soft); text-decoration:none;
+}
+.nav a:hover{color:var(--ink)}
+.bar .btn{padding:.6rem 1rem; min-height:0}
+.theme-pick{
+  font:400 .7rem/1 "IBM Plex Mono", monospace; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--ink-soft); background:var(--card); border:1px solid var(--line);
+  border-radius:7px; padding:9px 10px;
+}
+@media (max-width:1000px){ .nav{display:none} }
+@media (max-width:560px){ .bar .btn .lbl{display:none} .mark .txt span{display:none} }
+
+/* ---------- hero ---------- */
+.hero{position:relative; overflow:hidden; border-bottom:1px solid var(--line)}
+.hero-media{position:absolute; inset:0; z-index:0}
+.hero-media img{width:100%; height:100%; object-fit:cover;
+  animation:kb 22s ease-in-out infinite alternate}
+.hero-media::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg,
+    color-mix(in srgb, var(--paper) 62%, transparent) 0%,
+    color-mix(in srgb, var(--paper) 74%, transparent) 46%,
+    var(--paper) 100%);
+}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.08)}}
+.hero-in{position:relative; z-index:1; padding-block:clamp(64px,12vw,132px)}
+.hero .eyebrow{margin-bottom:22px}
+.hero .h1{margin-bottom:22px; max-width:19ch}
+.hero .lede{margin-bottom:30px}
+.hero-cta{display:flex; flex-wrap:wrap; gap:13px}
+.hero-tags{
+  display:flex; flex-wrap:wrap; gap:8px 8px; margin-top:34px; list-style:none; padding:0;
+}
+.hero-tags li{
+  font:400 .68rem/1 "IBM Plex Mono", monospace; letter-spacing:.08em; text-transform:uppercase;
+  padding:8px 12px; border:1px solid var(--line); border-radius:999px;
+  background:color-mix(in srgb, var(--card) 70%, transparent); color:var(--ink-soft);
+}
+
+/* ---------- marquee ---------- */
+.strip{border-bottom:1px solid var(--line); background:var(--card); overflow:hidden}
+.strip-in{
+  display:flex; gap:44px; padding-block:14px; white-space:nowrap;
+  font:500 .7rem/1 "IBM Plex Mono", monospace; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-soft); animation:slide 34s linear infinite;
+}
+.strip-in span{display:inline-flex; align-items:center; gap:44px}
+.strip-in span::after{content:"✦"; color:var(--accent)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- section frame ---------- */
+.band{padding-block:clamp(56px,9vw,104px)}
+.band + .band{border-top:1px solid var(--line)}
+.band-head{margin-bottom:40px; max-width:60ch}
+.band-head .eyebrow{margin-bottom:16px}
+.band-head .h2{margin-bottom:12px}
+
+/* ---------- services ---------- */
+.svc{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+}
+@media (max-width:860px){ .svc{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:520px){ .svc{grid-template-columns:1fr} }
+.svc-item{background:var(--card); padding:26px 24px 28px; display:flex; flex-direction:column; gap:9px}
+.svc-item .n{font:600 .66rem/1 "IBM Plex Mono", monospace; letter-spacing:.14em; color:var(--accent)}
+.svc-item p{color:var(--ink-soft); font-size:.96rem}
+
+/* ---------- gallery ---------- */
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px}
+.chip{
+  font:400 .7rem/1 "IBM Plex Mono", monospace; letter-spacing:.08em; text-transform:uppercase;
+  padding:9px 13px; border-radius:999px; border:1px solid var(--line);
+  background:var(--card); color:var(--ink-soft); cursor:pointer;
+  transition:background .2s ease, color .2s ease, border-color .2s ease;
+}
+.chip.is-on{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.gallery{
+  columns:3 260px; column-gap:16px;
+}
+.gallery figure{
+  break-inside:avoid; margin:0 0 16px; position:relative;
+  border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--tile);
+}
+.gallery figure[hidden]{display:none}
+.gallery img{width:100%; height:auto; transition:transform .5s ease}
+.gallery figure:hover img{transform:scale(1.035)}
+.gallery figcaption{
+  position:absolute; left:0; right:0; bottom:0; padding:26px 14px 12px;
+  font:400 .62rem/1.5 "IBM Plex Mono", monospace; letter-spacing:.05em;
+  text-transform:uppercase; color:#F2EEE6;
+  background:linear-gradient(to top, rgba(12,10,8,.82), rgba(12,10,8,0));
+}
+.gallery figcaption b{display:block; color:#fff; font-weight:600; letter-spacing:.03em; margin-bottom:3px; font-size:.66rem}
+
+/* ---------- reel ---------- */
+.reel{
+  display:flex; gap:16px; overflow-x:auto; padding-bottom:14px; scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+.reel::-webkit-scrollbar{height:8px}
+.reel::-webkit-scrollbar-thumb{background:var(--line); border-radius:99px}
+.reel button{
+  position:relative; flex:none; width:230px; aspect-ratio:9/14; scroll-snap-align:start;
+  border:1px solid var(--line); border-radius:14px; overflow:hidden; cursor:pointer;
+  background:var(--tile);
+}
+.reel video, .reel img{width:100%; height:100%; object-fit:cover}
+.reel .play{
+  position:absolute; inset:0; display:grid; place-items:center;
+  background:linear-gradient(180deg, rgba(12,10,8,.08), rgba(12,10,8,.5));
+}
+.reel .play i{
+  width:46px; height:46px; border-radius:50%; display:grid; place-items:center;
+  background:color-mix(in srgb, var(--accent) 92%, #fff); color:var(--accent-ink);
+}
+.reel .play i svg{width:16px; height:16px; margin-left:2px}
+.reel .cap{
+  position:absolute; left:10px; right:10px; bottom:10px; z-index:1;
+  font:400 .58rem/1.5 "IBM Plex Mono", monospace; letter-spacing:.05em; text-transform:uppercase;
+  color:#fff; text-shadow:0 1px 6px rgba(0,0,0,.6);
+}
+
+/* ---------- lightbox ---------- */
+.lb{
+  position:fixed; inset:0; z-index:80; display:none; place-items:center;
+  background:rgba(8,7,6,.86); padding:24px;
+}
+.lb.is-open{display:grid}
+.lb video{max-width:min(94vw,520px); max-height:88vh; border-radius:12px; background:#000}
+.lb-close{
+  position:absolute; top:18px; right:20px; width:42px; height:42px; border-radius:50%;
+  background:var(--card); color:var(--ink); display:grid; place-items:center; cursor:pointer;
+  border:1px solid var(--line);
+}
+
+/* ---------- badge / about ---------- */
+.about{display:grid; grid-template-columns:minmax(0,300px) 1fr; gap:44px; align-items:center}
+@media (max-width:760px){ .about{grid-template-columns:1fr; gap:28px} }
+.badge{
+  border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#141425;
+  box-shadow:var(--shadow);
+}
+.about p + p{margin-top:14px}
+.about .sig{
+  margin-top:20px; font:500 .7rem/1.6 "IBM Plex Mono", monospace;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft);
+}
+
+/* ---------- contact ---------- */
+.contact{display:grid; grid-template-columns:1fr 1fr; gap:44px}
+@media (max-width:820px){ .contact{grid-template-columns:1fr; gap:32px} }
+.form{display:grid; grid-template-columns:1fr 1fr; gap:15px}
+.field{display:flex; flex-direction:column; gap:7px}
+.field.full{grid-column:1 / -1}
+.field label{
+  font:500 .66rem/1 "IBM Plex Mono", monospace; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-soft);
+}
+.field input,.field select,.field textarea{
+  font:400 1rem/1.4 "Instrument Sans", system-ui, sans-serif;
+  background:var(--card); color:var(--ink);
+  border:1px solid var(--line); border-radius:8px; padding:12px 14px;
+  transition:border-color .2s ease;
+}
+.field textarea{resize:vertical; min-height:104px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.form .full.act{display:flex; flex-wrap:wrap; gap:12px 20px; align-items:center; margin-top:2px}
+.form .full.act p{font:500 .72rem/1.55 "IBM Plex Mono", monospace; color:var(--ink-soft); max-width:34ch}
+.rows{display:flex; flex-direction:column; gap:2px}
+.crow{
+  display:flex; gap:16px; align-items:flex-start; padding:18px 0; border-top:1px solid var(--line);
+}
+.crow:first-child{border-top:0}
+.crow .ic{
+  width:34px; height:34px; flex:none; border-radius:9px; border:1px solid var(--line);
+  display:grid; place-items:center; color:var(--accent);
+}
+.crow .ic svg{width:16px; height:16px}
+.crow .k{font:500 .64rem/1 "IBM Plex Mono", monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px}
+.crow .v{font-size:1.04rem}
+.crow a.v:hover{color:var(--accent)}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed; left:50%; bottom:26px; transform:translate(-50%,150%);
+  background:var(--ink); color:var(--paper);
+  font:500 .74rem/1.4 "IBM Plex Mono", monospace; letter-spacing:.02em;
+  padding:13px 20px; border-radius:9px; box-shadow:var(--shadow);
+  z-index:90; transition:transform .4s cubic-bezier(.2,.8,.2,1); max-width:min(90vw,420px);
+}
+.toast.is-up{transform:translate(-50%,0)}
+
+/* ---------- footer ---------- */
+.foot{border-top:1px solid var(--line); background:var(--card)}
+.foot-in{
+  display:flex; flex-wrap:wrap; gap:16px 40px; align-items:center; padding-block:30px;
+  font:400 .7rem/1.7 "IBM Plex Mono", monospace; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.foot-in .mark{margin-right:0}
+.foot-in .grow{margin-left:auto}
+
+/* ---------- motion ---------- */
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease}
+.reveal.in{opacity:1; transform:none}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important; transition:none !important}
+  .reveal{opacity:1; transform:none}
+  .hero-media img{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="mark" href="#top" aria-label="SSF Events, home">
+      <svg class="ring" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" stroke="var(--gold)" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="14.5" stroke="var(--gold)" stroke-width="1" stroke-dasharray="1.6 2.4"/>
+        <text x="20" y="24.5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="var(--gold)">SSF</text>
+      </svg>
+      <span class="txt"><b>SSF Events</b><span>Sri Sai Flora Enterprises</span></span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#work">The work</a>
+      <a href="#services">What we do</a>
+      <a href="#reel">On camera</a>
+      <a href="#about">The name</a>
+      <a href="#enquire">Enquire</a>
+    </nav>
+    <label class="theme-pick">
+      <span class="sr-only">Colour theme</span>
+      <select data-theme-select aria-label="Colour theme">
+        <option value="cotton">Cotton</option>
+        <option value="candlelight">Candlelight</option>
+      </select>
+    </label>
+    <a class="btn btn-primary" href="tel:+917411237979">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 3.5 9 3l2 4.5-2 1.5c.8 2 2.5 3.7 4.5 4.5l1.5-2 4.5 2-.5 2.5c-.3 1.4-1.6 2.3-3 2C11 19 5 13 5 6.5c-.3-1.4.6-2.7 2-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span class="lbl">74112&nbsp;37979</span>
+    </a>
+  </div>
+</header>
+
+<main id="main">
+  <span id="top"></span>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-media" aria-hidden="true">
+      <img src="assets/media/22_C3mwzlILf0Q.webp" alt="">
+    </div>
+    <div class="wrap hero-in">
+      <p class="eyebrow"><span class="tick"></span> Wedding &amp; event decor &nbsp;·&nbsp; Kolar &amp; Bengaluru, Karnataka</p>
+      <h1 class="h1">Life is an event. <em class="script">Make it memorable.</em></h1>
+      <p class="lede">We build the stage, the mandap and the flowers your day is remembered by &mdash; weddings, receptions, engagements, haldi, baby showers and birthdays, set up and struck by one team.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#enquire">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v11H7l-3 3V5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          Plan your event
+        </a>
+        <a class="btn btn-ghost" href="#work">See recent setups</a>
+      </div>
+      <ul class="hero-tags">
+        <li>Stage &amp; backdrop</li>
+        <li>Mandap</li>
+        <li>Reception</li>
+        <li>Haldi</li>
+        <li>Baby shower</li>
+        <li>Birthday</li>
+        <li>Theme decor</li>
+        <li>DJ &amp; lighting</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip-in">
+      <span>Kolar&nbsp;&nbsp;·&nbsp;&nbsp;Bengaluru&nbsp;&nbsp;·&nbsp;&nbsp;Bangarpet&nbsp;&nbsp;·&nbsp;&nbsp;Avani&nbsp;&nbsp;·&nbsp;&nbsp;Tumkur&nbsp;&nbsp;·&nbsp;&nbsp;across Karnataka</span>
+      <span>Kolar&nbsp;&nbsp;·&nbsp;&nbsp;Bengaluru&nbsp;&nbsp;·&nbsp;&nbsp;Bangarpet&nbsp;&nbsp;·&nbsp;&nbsp;Avani&nbsp;&nbsp;·&nbsp;&nbsp;Tumkur&nbsp;&nbsp;·&nbsp;&nbsp;across Karnataka</span>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section id="work" class="band wrap">
+    <header class="band-head reveal">
+      <p class="eyebrow"><span class="tick"></span> The work</p>
+      <h2 class="h2">Setups from the last two seasons</h2>
+      <p class="note">Every photo here is a real SSF Events setup, straight from our Instagram. Filter by the kind of function.</p>
+    </header>
+
+    <div class="chips" role="group" aria-label="Filter the gallery">
+      <button class="chip is-on" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" data-filter="wedding" aria-pressed="false">Weddings &amp; receptions</button>
+      <button class="chip" data-filter="mandap" aria-pressed="false">Mandap &amp; tradition</button>
+      <button class="chip" data-filter="celebration" aria-pressed="false">Haldi &amp; celebrations</button>
+    </div>
+
+    <div class="gallery reveal">
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/22_C3mwzlILf0Q.webp" alt="Lotus-centre reception stage in a banquet hall"><figcaption><b>Lotus centre stage</b>Banquet-hall reception</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/23_ComnbsSvpzz.webp" alt="Carved red and gold reception stage with horse motifs"><figcaption><b>Carved red &amp; gold stage</b>Reception backdrop</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/31_CqZey2IraXd.webp" alt="Gopuram-style mandap inside a tent pavilion"><figcaption><b>Gopuram mandap</b>Pavilion setup · Avani, Kolar</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/33_CokFlU6PwCH.webp" alt="Brass Venkateshwara gateway framing a red-carpet entrance"><figcaption><b>Brass gateway entrance</b>Betrothal / pooja</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/29_CpSfO0uLhI-.webp" alt="Pearl-curtain stage with blue uplight and flower stands along the aisle"><figcaption><b>Pearl-curtain stage</b>Reception, blue wash</figcaption></figure>
+      <figure data-cat="celebration"><img loading="lazy" src="assets/media/01_C3sc9aDyjI2.webp" alt="Green and yellow haldi stage with a marigold floor rangoli"><figcaption><b>Haldi stage &amp; rangoli</b>Kolar district</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/36_CoEZdBjr0ZD.webp" alt="Rose-curtain stage with marigold pelmet and a carved settee"><figcaption><b>Rose-curtain stage</b>Marigold pelmet</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/32_CokFpHKvVAt.webp" alt="Diamond-lattice flower backdrop in yellow and red with a settee"><figcaption><b>Lattice flower backdrop</b>Engagement settee</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/12_C0tQGUUr6nj.webp" alt="Row of illuminated floral arches forming a wide wedding stage"><figcaption><b>Illuminated arch stage</b>Wide wedding backdrop</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/18_C3mxQWVr_OS.webp" alt="White colonnade stage with brass deities and a floral canopy"><figcaption><b>White colonnade stage</b>Brass deities · floral canopy</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/13_CxzBMQiSRBw.webp" alt="Traditional mandap with deities and dense greenery"><figcaption><b>Traditional mandap</b>Bengaluru</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/26_CpFQAiJLHum.webp" alt="Reception aisle dressed with tall flower stands and draped chairs"><figcaption><b>Reception aisle</b>Flower stands &amp; drapes</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/19_CxzBEmUy_tZ.webp" alt="Brass peacock pillars with layered floral garlands"><figcaption><b>Brass peacock pillars</b>Bengaluru</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/37_CoEZKjgr_S_.webp" alt="White lattice stage with floral arches and potted greenery"><figcaption><b>White lattice stage</b>Floral arches</figcaption></figure>
+      <figure data-cat="celebration"><img loading="lazy" src="assets/media/38_CoEZH74rgWc.webp" alt="Pastel peacock-fan backdrop for a naming ceremony"><figcaption><b>Peacock-fan backdrop</b>Naming ceremony</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/00_C3_ohmNPbLG.webp" alt="Reception stage with a violet LED backdrop"><figcaption><b>Violet LED stage</b>Reception</figcaption></figure>
+      <figure data-cat="wedding"><img loading="lazy" src="assets/media/30_CwlyWhavjsN.webp" alt="Long banquet aisle with red carpet and draped chairs"><figcaption><b>Banquet aisle dressing</b>CMR, Bengaluru</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/20_CxzBSZeSDOE.webp" alt="Close view of brass peacock and flower detailing on a mandap pillar"><figcaption><b>Peacock &amp; flower detail</b>Bengaluru</figcaption></figure>
+      <figure data-cat="celebration"><img loading="lazy" src="assets/media/24_CqGF3k6PRXT.webp" alt="Function stage with a bright floral border"><figcaption><b>Function stage</b>Govt Junior College, Kolar</figcaption></figure>
+      <figure data-cat="mandap"><img loading="lazy" src="assets/media/35_CqZe7eMrbZV.webp" alt="Mandap under a clear-span tent pavilion"><figcaption><b>Pavilion mandap</b>Tent setup</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="band wrap">
+    <header class="band-head reveal">
+      <p class="eyebrow"><span class="tick"></span> What we do</p>
+      <h2 class="h2">One decor team, whole function</h2>
+      <p class="note">We take the look end to end &mdash; design, flowers, structure, lighting and on-the-day setup. Tell us the date and the hall; we quote for exactly what that function needs.</p>
+    </header>
+    <div class="svc reveal">
+      <div class="svc-item"><span class="n">01</span><h3 class="h3">Wedding stage &amp; backdrop</h3><p>Feature stages, floral walls and seating for the muhurtham and the reception.</p></div>
+      <div class="svc-item"><span class="n">02</span><h3 class="h3">Mandap &amp; tradition</h3><p>Gopuram and pillar mandaps, brass deities, garlands and pooja setups.</p></div>
+      <div class="svc-item"><span class="n">03</span><h3 class="h3">Reception &amp; entrance</h3><p>Aisle flower stands, draped chairs, gateway arches and photo corners.</p></div>
+      <div class="svc-item"><span class="n">04</span><h3 class="h3">Haldi &amp; get-togethers</h3><p>Bright marigold staging, floor rangoli, seating and props for the day functions.</p></div>
+      <div class="svc-item"><span class="n">05</span><h3 class="h3">Baby shower &amp; birthday</h3><p>Balloon and flower backdrops, name boards and themed corners.</p></div>
+      <div class="svc-item"><span class="n">06</span><h3 class="h3">Theme decor, DJ &amp; lighting</h3><p>A colour story carried across the hall, with uplights, LED walls and sound.</p></div>
+    </div>
+  </section>
+
+  <!-- REEL -->
+  <section id="reel" class="band wrap">
+    <header class="band-head reveal">
+      <p class="eyebrow"><span class="tick"></span> On camera</p>
+      <h2 class="h2">Walk-throughs from the floor</h2>
+      <p class="note">Short clips from our Instagram &mdash; tap any one to play. Sound is on the original reels.</p>
+    </header>
+    <div class="reel reveal" id="reelTrack">
+      <button data-video="assets/media/34_CwkNawOSHQH.mp4"><img loading="lazy" src="assets/media/34_CwkNawOSHQH_poster.jpg" alt="Baby-shower setup with balloons and warm lighting"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Baby shower · Kolar</span></button>
+      <button data-video="assets/media/39_CoG8qUHDoGx.mp4"><img loading="lazy" src="assets/media/39_CoG8qUHDoGx_poster.jpg" alt="Anniversary celebration decor"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Anniversary · Tumkur</span></button>
+      <button data-video="assets/media/07_C3xdNTuyJpI.mp4"><img loading="lazy" src="assets/media/07_C3xdNTuyJpI_poster.jpg" alt="Stage decor walk-through in Bangarpet"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Stage · Bangarpet</span></button>
+      <button data-video="assets/media/14_C3mx-Tqrmo7.mp4"><img loading="lazy" src="assets/media/14_C3mx-Tqrmo7_poster.jpg" alt="Setup at Sri Nandini Palace"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Sri Nandini Palace</span></button>
+      <button data-video="assets/media/09_C55DBR8r8HP.mp4"><img loading="lazy" src="assets/media/09_C55DBR8r8HP_poster.jpg" alt="Reception hall decor walk-through"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Reception hall</span></button>
+      <button data-video="assets/media/06_C3xezUTSmHo.mp4"><img loading="lazy" src="assets/media/06_C3xezUTSmHo_poster.jpg" alt="Floral stage walk-through"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Floral stage</span></button>
+      <button data-video="assets/media/10_C3_0KY8r_n-.mp4"><img loading="lazy" src="assets/media/10_C3_0KY8r_n-_poster.jpg" alt="Mandap detail clip"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Mandap detail</span></button>
+      <button data-video="assets/media/27_CoiV1ZqjdVT.mp4"><img loading="lazy" src="assets/media/27_CoiV1ZqjdVT_poster.jpg" alt="Venue entrance decor clip"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Entrance decor</span></button>
+      <button data-video="assets/media/28_CoiZEEcjw-l.mp4"><img loading="lazy" src="assets/media/28_CoiZEEcjw-l_poster.jpg" alt="Hall seating decor clip"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Hall &amp; seating</span></button>
+      <button data-video="assets/media/03_C35NNM9v4R0.mp4"><img loading="lazy" src="assets/media/03_C35NNM9v4R0_poster.jpg" alt="Setup time-lapse clip"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Setup clip</span></button>
+      <button data-video="assets/media/08_C7wveRZSl9e.mp4"><img loading="lazy" src="assets/media/08_C7wveRZSl9e_poster.jpg" alt="Evening stage lighting clip"><span class="play"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span><span class="cap">Evening lighting</span></button>
+    </div>
+  </section>
+
+  <!-- ABOUT / BADGE -->
+  <section id="about" class="band wrap">
+    <div class="about">
+      <div class="badge reveal">
+        <img src="assets/logo-badge.webp" alt="SSF Events — Sri Sai Flora Enterprises crest">
+      </div>
+      <div class="reveal">
+        <p class="eyebrow" style="margin-bottom:16px"><span class="tick"></span> The name</p>
+        <h2 class="h2" style="margin-bottom:14px">SSF Events &mdash; Sri Sai Flora Enterprises</h2>
+        <p>SSF Events is the decor arm of <b>Sri Sai Flora Enterprises</b>, working out of Kolar and taking functions across the district and into Bengaluru, Bangarpet, Avani and Tumkur.</p>
+        <p>We are a hands-on team: the people who design your stage are the people who build it that morning and take it down that night. Flowers, structure, drapes, lighting and sound come from one point of contact, so nothing falls between vendors on the day.</p>
+        <p class="sig">Life is an event &mdash; make it memorable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENQUIRE -->
+  <section id="enquire" class="band wrap">
+    <header class="band-head reveal">
+      <p class="eyebrow"><span class="tick"></span> Enquire</p>
+      <h2 class="h2">Tell us about the function</h2>
+      <p class="note">Fill this in and it opens WhatsApp with your details ready to send &mdash; or call us directly. We reply with a quote built for your date and hall.</p>
+    </header>
+    <div class="contact">
+      <form class="form reveal" id="enquiryForm" novalidate>
+        <div class="field">
+          <label for="f-name">Your name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="f-type">Function</label>
+          <select id="f-type" name="type" required>
+            <option value="">Select one</option>
+            <option>Wedding</option>
+            <option>Reception</option>
+            <option>Engagement / betrothal</option>
+            <option>Haldi</option>
+            <option>Baby shower / naming</option>
+            <option>Birthday</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-date">Event date</label>
+          <input id="f-date" name="date" type="date">
+        </div>
+        <div class="field full">
+          <label for="f-place">Venue or town</label>
+          <input id="f-place" name="place" type="text" placeholder="Hall name, or which town">
+        </div>
+        <div class="field full">
+          <label for="f-msg">What you have in mind</label>
+          <textarea id="f-msg" name="message" placeholder="Rough guest count, colours you like, the parts you already have sorted&hellip;"></textarea>
+        </div>
+        <div class="full act">
+          <button class="btn btn-primary" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v11H7l-3 3V5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            Send on WhatsApp
+          </button>
+          <p>Goes straight to our phone. No mailing list, no call centre.</p>
+        </div>
+      </form>
+
+      <div class="rows reveal">
+        <div class="crow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M6.5 3.5 9 3l2 4.5-2 1.5c.8 2 2.5 3.7 4.5 4.5l1.5-2 4.5 2-.5 2.5c-.3 1.4-1.6 2.3-3 2C11 19 5 13 5 6.5c-.3-1.4.6-2.7 2-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <div><div class="k">Call or WhatsApp</div><a class="v" href="tel:+917411237979">+91&nbsp;74112&nbsp;37979</a></div>
+        </div>
+        <div class="crow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/></svg></span>
+          <div><div class="k">Instagram</div><a class="v" href="https://www.instagram.com/ssf_events/" target="_blank" rel="noopener">@ssf_events</a></div>
+        </div>
+        <div class="crow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.6" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <div><div class="k">Based in</div><div class="v">Kolar, Karnataka &mdash; serving Bengaluru, Bangarpet, Avani &amp; Tumkur</div></div>
+        </div>
+        <div class="crow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div><div class="k">Good to have ready</div><div class="v">Date, venue, guest count and a couple of reference photos.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <a class="mark" href="#top" aria-label="SSF Events, back to top">
+      <svg class="ring" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" stroke="var(--gold)" stroke-width="1.4"/>
+        <text x="20" y="24.5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="var(--gold)">SSF</text>
+      </svg>
+      <span class="txt"><b>SSF Events</b><span>Sri Sai Flora Enterprises</span></span>
+    </a>
+    <span>Wedding &amp; event decor · Kolar &amp; Bengaluru</span>
+    <span class="grow">© <span id="yr"></span> Sri Sai Flora Enterprises</span>
+  </div>
+</footer>
+
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Video player">
+  <button class="lb-close" id="lbClose" aria-label="Close video">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+  </button>
+  <video id="lbVideo" controls playsinline preload="metadata"></video>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- year ---- */
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  /* ---- theme ---- */
+  var KEY = "ssf-theme", THEMES = ["cotton","candlelight"];
+  var selects = [].slice.call(document.querySelectorAll("[data-theme-select]"));
+  function setTheme(t){
+    if(THEMES.indexOf(t) === -1) t = "cotton";
+    document.documentElement.setAttribute("data-theme", t);
+    try{ localStorage.setItem(KEY, t); }catch(e){}
+    selects.forEach(function(s){ s.value = t; });
+  }
+  var saved = null;
+  try{ saved = localStorage.getItem(KEY); }catch(e){}
+  setTheme(saved || "cotton");
+  selects.forEach(function(s){ s.addEventListener("change", function(){ setTheme(s.value); }); });
+
+  /* ---- scroll reveal ---- */
+  var rev = [].slice.call(document.querySelectorAll(".reveal"));
+  if(window.IntersectionObserver && !reduced){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    rev.forEach(function(el){ io.observe(el); });
+  } else {
+    rev.forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---- gallery filter ---- */
+  var chips = [].slice.call(document.querySelectorAll(".chip"));
+  var figs = [].slice.call(document.querySelectorAll(".gallery figure"));
+  chips.forEach(function(chip){
+    chip.addEventListener("click", function(){
+      var f = chip.getAttribute("data-filter");
+      chips.forEach(function(c){
+        var on = c === chip;
+        c.classList.toggle("is-on", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      figs.forEach(function(fig){
+        fig.hidden = !(f === "all" || fig.getAttribute("data-cat") === f);
+      });
+    });
+  });
+
+  /* ---- reel lightbox ---- */
+  var lb = document.getElementById("lightbox");
+  var lbVideo = document.getElementById("lbVideo");
+  var lbClose = document.getElementById("lbClose");
+  var lastFocus = null;
+  function openVideo(src){
+    lastFocus = document.activeElement;
+    lbVideo.src = src;
+    lb.classList.add("is-open");
+    lbClose.focus();
+    if(!reduced){ var p = lbVideo.play(); if(p && p.catch) p.catch(function(){}); }
+  }
+  function closeVideo(){
+    lb.classList.remove("is-open");
+    lbVideo.pause();
+    lbVideo.removeAttribute("src");
+    lbVideo.load();
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  [].slice.call(document.querySelectorAll(".reel button")).forEach(function(b){
+    b.addEventListener("click", function(){ openVideo(b.getAttribute("data-video")); });
+  });
+  lbClose.addEventListener("click", closeVideo);
+  lb.addEventListener("click", function(e){ if(e.target === lb) closeVideo(); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape" && lb.classList.contains("is-open")) closeVideo(); });
+
+  /* ---- enquiry form -> WhatsApp ---- */
+  var form = document.getElementById("enquiryForm");
+  var toast = document.getElementById("toast");
+  var toastTimer;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("is-up");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("is-up"); }, 4600);
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var d = new FormData(form);
+    var name = (d.get("name")||"").trim();
+    var phone = (d.get("phone")||"").trim();
+    if(!name || !phone || !d.get("type")){
+      showToast("Add your name, phone and the type of function.");
+      return;
+    }
+    var lines = [
+      "Hi SSF Events, I'd like a decor quote.",
+      "",
+      "Name: " + name,
+      "Phone: " + phone,
+      "Function: " + d.get("type"),
+      d.get("date") ? "Date: " + d.get("date") : "",
+      d.get("place") ? "Venue/town: " + d.get("place") : "",
+      d.get("message") ? "Details: " + d.get("message") : ""
+    ].filter(Boolean);
+    var url = "https://wa.me/917411237979?text=" + encodeURIComponent(lines.join("\n"));
+    window.open(url, "_blank", "noopener");
+    showToast("Opening WhatsApp with your details…");
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+.env
+.env.local
+.env*.local
+node_modules/
+.vercel
+.DS_Store
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+
+# Original static prototype (kept for reference)
+tsconfig.tsbuildinfo
+
+# Local tooling / agent scaffolding — not part of the app
+.mcp.json
+.claude/
+.agents/
+agent/
+skills-lock.json
+
+# QA screenshots (regenerate with the shot scripts)
+screenshots/
