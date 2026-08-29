@@ -1,7 +1,52 @@
 # Deploying SSF Events
 
 The repo is on GitHub at **`spik-code/ssf-events`** (private). Host is **Vercel**.
-The steps below are done once; after that every push to `main` auto-deploys.
+
+Two ways to set it up — pick one:
+
+- **CLI** (below) — fastest, all from the terminal.
+- **Dashboard** (from "## 1. Create the Vercel project") — clicks through the web
+  UI; also wires up auto-deploy-on-push in one step.
+
+Either way, once done, connecting the Git repo means every push to `main`
+auto-deploys.
+
+---
+
+## CLI deploy
+
+Run these from the project folder. In the Claude Code prompt, prefix each with
+`! ` so the output shows up here.
+
+```bash
+# 1. Log in (opens a browser / emails a code) — one time per machine
+npx vercel login
+
+# 2. Link this folder to a Vercel project
+#    Answer: set up "spik-code/ssf-events"? yes · scope: your account ·
+#    link to existing? no · project name: ssf-events · directory: ./
+npx vercel link
+
+# 3. Push all non-secret env vars from .env.local
+bash deploy/set-vercel-env.sh
+
+# 4. Add the secrets by hand (paste each value when prompted)
+npx vercel env add SUPABASE_SERVICE_ROLE_KEY production   # Supabase → Settings → API → service_role
+npx vercel env add RESEND_API_KEY production              # resend.com → API Keys (optional)
+
+# 5. Deploy to production — prints the live https://ssf-events-*.vercel.app URL
+npx vercel --prod
+```
+
+Then do **step 4 below** ("Point auth at the real URL") with that URL, and
+**step 5** ("First admin login").
+
+To get auto-deploy on every `git push`: Vercel dashboard → the project →
+**Settings → Git → Connect Git Repository** → `spik-code/ssf-events`.
+
+The env-var table in the next section applies to both paths — it's what
+`deploy/set-vercel-env.sh` reads from `.env.local`, plus the secrets you add in
+step 4.
 
 ---
 
