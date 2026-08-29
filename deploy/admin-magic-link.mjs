@@ -65,5 +65,23 @@ if (error) {
 const { hashed_token, verification_type } = data.properties;
 const url = `${siteUrl}/auth/callback?token_hash=${hashed_token}&type=${verification_type}&next=/admin`;
 
-console.log("\nPaste this into the browser you want signed in as " + email + ":\n");
+console.log("\nSign-in link for " + email + " (single use, ~1 hour):\n");
 console.log(url + "\n");
+
+// Open it directly — copy-pasting a URL with `&` in it through a terminal or
+// chat window is the usual way this gets truncated and fails.
+if (!process.argv.includes("--no-open")) {
+  const { spawn } = await import("node:child_process");
+  const cmd =
+    process.platform === "win32"
+      ? ["cmd", ["/c", "start", "", url]]
+      : process.platform === "darwin"
+        ? ["open", [url]]
+        : ["xdg-open", [url]];
+  try {
+    spawn(cmd[0], cmd[1], { detached: true, stdio: "ignore" }).unref();
+    console.log("Opening it in your default browser…\n");
+  } catch {
+    console.log("Could not open a browser automatically — paste the URL above.\n");
+  }
+}

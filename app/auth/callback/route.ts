@@ -25,7 +25,10 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
-  const type = searchParams.get("type") as EmailOtpType | null;
+  // `type` can go missing when a mail client or a copy-paste truncates the URL
+  // at an `&`. A token_hash on its own is unambiguous here — this site only
+  // ever issues magic links — so default rather than reject the sign-in.
+  const type = (searchParams.get("type") ?? "magiclink") as EmailOtpType;
   const next = searchParams.get("next") ?? "/admin";
 
   // Only ever redirect within this site — never to a URL supplied in the query.
@@ -35,7 +38,7 @@ export async function GET(request: Request) {
 
   let failed: string | null = null;
 
-  if (tokenHash && type) {
+  if (tokenHash) {
     const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type });
     if (error) failed = "link_expired";
   } else if (code) {
