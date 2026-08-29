@@ -5,7 +5,15 @@ import { Reel } from "@/components/Reel";
 import { EnquiryForm } from "@/components/EnquiryForm";
 import { Reviews } from "@/components/Reviews";
 import { Footer } from "@/components/Footer";
-import { PhoneIcon, ChatIcon, InstagramIcon, PinIcon, MailIcon, ListIcon } from "@/components/icons";
+import {
+  PhoneIcon,
+  ChatIcon,
+  InstagramIcon,
+  PinIcon,
+  MailIcon,
+  ListIcon,
+  WhatsAppIcon,
+} from "@/components/icons";
 import { getGallery, getServices, getSettings, getReviews, averageRating } from "@/lib/queries";
 import { REEL } from "@/lib/content";
 import { SITE } from "@/lib/site";
@@ -38,6 +46,14 @@ export default async function Home() {
   // Contact details come from site_settings when the admin has set them,
   // falling back to the env-backed SITE constants.
   const contact = resolveContact(settings);
+
+  const waHref = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(
+    `Hi ${SITE.name}, I'd like a quote for my function.`,
+  )}`;
+  // Gmail's compose URL, for people with no desktop mail client behind mailto:.
+  const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    contact.email,
+  )}&su=${encodeURIComponent(`Enquiry for ${SITE.name}`)}`;
 
   // The headline reads "Life is an event. Make it memorable." — the second
   // sentence is set in the accent script face.
@@ -226,6 +242,23 @@ export default async function Home() {
                   <a className="v" href={contact.telHref}>
                     {contact.phone}
                   </a>
+                  {/* A tel: link only dials — it never opens WhatsApp — so the
+                      WhatsApp handoff needs its own wa.me link. */}
+                  <div className="crow-acts">
+                    <a className="cact" href={contact.telHref}>
+                      <PhoneIcon />
+                      Call
+                    </a>
+                    <a
+                      className="cact is-wa"
+                      href={waHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <WhatsAppIcon />
+                      WhatsApp
+                    </a>
+                  </div>
                 </div>
               </div>
               <div className="crow">
@@ -237,6 +270,18 @@ export default async function Home() {
                   <a className="v" href={contact.mailHref}>
                     {contact.email}
                   </a>
+                  {/* mailto: does nothing on a device with no mail app set up,
+                      so offer Gmail's compose window as a second route. */}
+                  <div className="crow-acts">
+                    <a className="cact" href={contact.mailHref}>
+                      <MailIcon />
+                      Mail app
+                    </a>
+                    <a className="cact" href={gmailHref} target="_blank" rel="noopener noreferrer">
+                      <MailIcon />
+                      Gmail
+                    </a>
+                  </div>
                 </div>
               </div>
               <div className="crow">
@@ -278,6 +323,19 @@ export default async function Home() {
       </main>
 
       <Footer home />
+
+      {/* Always-reachable WhatsApp. Most enquiries here arrive by WhatsApp, and
+          a customer halfway down the gallery shouldn't have to find the form. */}
+      <a
+        className="wa-fab"
+        href={waHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Message ${SITE.name} on WhatsApp`}
+        title="Message us on WhatsApp"
+      >
+        <WhatsAppIcon />
+      </a>
     </>
   );
 }
