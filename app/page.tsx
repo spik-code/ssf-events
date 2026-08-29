@@ -8,7 +8,8 @@ import { Footer } from "@/components/Footer";
 import { PhoneIcon, ChatIcon, InstagramIcon, PinIcon, MailIcon, ListIcon } from "@/components/icons";
 import { getGallery, getServices, getSettings, getReviews, averageRating } from "@/lib/queries";
 import { REEL } from "@/lib/content";
-import { SITE, telHref, mailHref } from "@/lib/site";
+import { SITE } from "@/lib/site";
+import { resolveContact } from "@/lib/contact";
 
 export const revalidate = 300;
 
@@ -34,6 +35,10 @@ export default async function Home() {
     getReviews(),
   ]);
 
+  // Contact details come from site_settings when the admin has set them,
+  // falling back to the env-backed SITE constants.
+  const contact = resolveContact(settings);
+
   // The headline reads "Life is an event. Make it memorable." — the second
   // sentence is set in the accent script face.
   const [headLead, ...headRest] = settings.hero_headline.split(". ");
@@ -45,7 +50,11 @@ export default async function Home() {
         Skip to content
       </a>
 
-      <Header showReviews={reviews.length > 0 || Boolean(settings.google_reviews_url)} />
+      <Header
+        showReviews={reviews.length > 0 || Boolean(settings.google_reviews_url)}
+        phone={contact.phone}
+        telHref={contact.telHref}
+      />
 
       <main id="main">
         <span id="top" />
@@ -205,7 +214,7 @@ export default async function Home() {
             </p>
           </header>
           <div className="contact">
-            <EnquiryForm />
+            <EnquiryForm whatsapp={contact.whatsapp} />
 
             <div className="rows reveal in">
               <div className="crow">
@@ -214,8 +223,8 @@ export default async function Home() {
                 </span>
                 <div>
                   <div className="k">Call or WhatsApp</div>
-                  <a className="v" href={telHref}>
-                    {SITE.phone}
+                  <a className="v" href={contact.telHref}>
+                    {contact.phone}
                   </a>
                 </div>
               </div>
@@ -225,8 +234,8 @@ export default async function Home() {
                 </span>
                 <div>
                   <div className="k">Email</div>
-                  <a className="v" href={mailHref}>
-                    {SITE.email}
+                  <a className="v" href={contact.mailHref}>
+                    {contact.email}
                   </a>
                 </div>
               </div>
@@ -236,7 +245,7 @@ export default async function Home() {
                 </span>
                 <div>
                   <div className="k">Instagram</div>
-                  <a className="v" href={SITE.instagram} target="_blank" rel="noopener noreferrer">
+                  <a className="v" href={contact.instagram} target="_blank" rel="noopener noreferrer">
                     @ssf_events
                   </a>
                 </div>

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Mark } from "@/components/Mark";
 import { Footer } from "@/components/Footer";
-import { SITE, telHref, mailHref } from "@/lib/site";
+import { SITE } from "@/lib/site";
+import { resolveContact } from "@/lib/contact";
+import { getSettings } from "@/lib/queries";
 import { PRIVACY_UPDATED, DATA_REGION } from "@/lib/legal";
 
 export const metadata: Metadata = {
@@ -12,7 +14,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
 };
 
-export default function PrivacyPage() {
+export const revalidate = 300;
+
+export default async function PrivacyPage() {
+  // Same source as the homepage, so the grievance contact here can never drift
+  // from the number and address shown on the site.
+  const contact = resolveContact(await getSettings());
+
   return (
     <>
       <span id="top" />
@@ -121,7 +129,7 @@ export default function PrivacyPage() {
           <li>stop using it &mdash; withdraw your consent.</li>
         </ul>
         <p>
-          Email <a href={mailHref}>{SITE.email}</a> or call <a href={telHref}>{SITE.phone}</a> and we
+          Email <a href={contact.mailHref}>{contact.email}</a> or call <a href={contact.telHref}>{contact.phone}</a> and we
           will act on it. If you are not satisfied with how we have handled your data, please raise it
           with us first; you may also complain to the Data Protection Board of India.
         </p>
@@ -132,7 +140,7 @@ export default function PrivacyPage() {
           <br />
           {SITE.base} &mdash; serving {SITE.serving}
           <br />
-          <a href={mailHref}>{SITE.email}</a> &middot; <a href={telHref}>{SITE.phone}</a>
+          <a href={contact.mailHref}>{contact.email}</a> &middot; <a href={contact.telHref}>{contact.phone}</a>
         </p>
 
         <h2 className="h2">Changes</h2>

@@ -79,11 +79,28 @@ function is quoted individually off-site.
 
 ### Verified
 
-- Public / `anon` role cannot read `inquiries`, `bookings`, or `admin_users` — returns `[]`
-- A signed-in **non-admin** gets the same: `[]` from every admin-only table, no error
+Read access, by role:
+
+- `anon` cannot read `inquiries`, `bookings`, `admin_users` or `admin_allowlist` — `[]`
+- A signed-in **non-admin** gets the same `[]`, with no error to probe
 - A signed-in **admin** reads `inquiries`, `bookings`, `gallery_items`, `reviews`,
   `services`, `site_settings`, `testimonials` through RLS
-- Public UPDATE/DELETE on `gallery_items` affects 0 rows (RLS filters them out)
+
+Writes, as a signed-in non-admin — every one refused:
+
+| Attempt | Result |
+|---|---|
+| `UPDATE gallery_items` | 0 rows |
+| `DELETE FROM inquiries` | 0 rows |
+| `INSERT INTO reviews` | violates RLS policy |
+| `UPDATE site_settings` | 0 rows |
+| `INSERT INTO admin_users` (self-promote) | violates RLS policy |
+
+- `anon` calling `is_admin()` as an RPC → `permission denied`
+- `/api/imagekit/auth` → **401** both signed-out and as a signed-in non-admin
+- Every `/admin/*` page shows the "Not an admin" screen to a signed-in non-admin
+- End-to-end as the real admin: gallery upload (browser → signed ImageKit upload →
+  DB row) and delete (DB row + the ImageKit file, both confirmed gone)
 - Supabase security advisors: 2 remaining, both expected —
   `admin_allowlist` has RLS on with **no policies** (deliberate: service-role-only),
   and leaked-password protection is off (irrelevant — this project is magic-link only,
@@ -100,6 +117,18 @@ Everything on the page is database-driven. Sign in at `/admin` and use **Content
 - **Reviews / testimonials** → `reviews` — only add words a real customer actually said
 
 Changes appear within 5 minutes (ISR revalidation).
+
+### Where contact details come from
+
+Phone, WhatsApp, email and Instagram are resolved by `lib/contact.ts`:
+`site_settings` wins when it holds a non-empty value, and the env-backed `SITE`
+constants in `lib/site.ts` are the fallback if Supabase is unreachable. So the
+Content editor's contact fields really do change the site — the header call
+button, the contact rows, the WhatsApp handoff and the privacy page's grievance
+contact all read the same resolved values.
+
+`whatsapp_number` is normalised to digits-with-country-code before it reaches a
+`wa.me` link, so a bare 10-digit number saved in the admin still works.
 
 ## Google reviews
 
@@ -276,8 +305,9 @@ components/          Header, Footer, Gallery, Reel, EnquiryForm, Reviews, icons
 components/admin/    LoginForm, AdminNav, LeadsTable, GalleryManager, ContentEditor, ReviewsManager
 lib/                Supabase clients (server / browser / ssr), queries, ImageKit helpers, seed content
 lib/legal.ts        PRIVACY_VERSION, PRIVACY_UPDATED, DATA_REGION
+lib/contact.ts      resolveContact() — settings-over-env contact details
 lib/supabase/ssr.ts getUser(), isAdmin()
-supabase/           SQL migrations (9, all applied to the linked project)
+supabase/           SQL migrations (10, all applied to the linked project)
 public/media/       reel videos + posters
 prototype/          the original static HTML this was built from
 ```

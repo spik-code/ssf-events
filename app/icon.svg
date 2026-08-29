@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- SSF Events tab icon: the ring mark on the brand red, so it stays legible
+       at 16px in both light and dark browser chrome. -->
+  <rect width="64" height="64" rx="14" fill="#B4322A"/>
+  <circle cx="32" cy="32" r="23" fill="none" stroke="#F2D9A0" stroke-width="2.6"/>
+  <circle cx="32" cy="32" r="18" fill="none" stroke="#F2D9A0" stroke-width="1.6"
+          stroke-dasharray="2.4 3.4" opacity=".75"/>
+  <text x="32" y="39.5" text-anchor="middle" fill="#FBF4F2"
+        font-family="IBM Plex Mono, ui-monospace, monospace"
+        font-size="17" font-weight="600" letter-spacing="0.5">SSF</text>
+</svg>

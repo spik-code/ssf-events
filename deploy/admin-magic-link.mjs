@@ -36,8 +36,10 @@ const SERVICE_KEY =
     ? fromEnvFile("SUPABASE_SERVICE_ROLE_KEY")
     : undefined);
 
-const email = process.argv[2] || "srisaifloraevent@gmail.com";
-const siteUrl = (process.argv[3] || "http://localhost:3000").replace(/\/$/, "");
+// Positional args only — flags like --no-open must not be mistaken for the email.
+const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+const email = args[0] || "srisaifloraevent@gmail.com";
+const siteUrl = (args[1] || "http://localhost:3000").replace(/\/$/, "");
 
 if (!SUPABASE_URL || !SERVICE_KEY) {
   console.error(

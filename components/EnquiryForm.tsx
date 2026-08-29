@@ -22,8 +22,11 @@ const FUNCTIONS: { value: string; label: string }[] = [
  * Posts the enquiry to /api/enquiry (Supabase insert + Resend notification),
  * then offers a pre-filled WhatsApp handoff. If the API is down the WhatsApp
  * link still works, so an enquiry is never simply lost.
+ *
+ * `whatsapp` is the number the page resolved from site_settings, so changing it
+ * in the admin changes where the handoff goes.
  */
-export function EnquiryForm() {
+export function EnquiryForm({ whatsapp = SITE.whatsapp }: { whatsapp?: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [toast, setToast] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
@@ -56,7 +59,7 @@ export function EnquiryForm() {
       needLabels(d).length ? `Needs: ${needLabels(d).join(", ")}` : "",
       d.get("message") ? `Details: ${d.get("message")}` : "",
     ].filter(Boolean);
-    return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`;
+    return `https://wa.me/${whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`;
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {

@@ -1,9 +1,17 @@
 import { Mark } from "./Mark";
 import { ThemeSelect } from "./ThemeSelect";
 import { PhoneIcon } from "./icons";
-import { SITE, telHref } from "@/lib/site";
+import { SITE } from "@/lib/site";
 
-export function Header({ showReviews = false }: { showReviews?: boolean }) {
+export function Header({
+  showReviews = false,
+  phone = SITE.phone,
+  telHref = `tel:${SITE.phone.replace(/[^\d+]/g, "")}`,
+}: {
+  showReviews?: boolean;
+  phone?: string;
+  telHref?: string;
+}) {
   return (
     <header className="bar">
       <div className="wrap bar-in">
@@ -19,7 +27,7 @@ export function Header({ showReviews = false }: { showReviews?: boolean }) {
         <ThemeSelect />
         <a className="btn btn-primary" href={telHref}>
           <PhoneIcon />
-          <span className="lbl">{SITE.phone.replace("+91 ", "")}</span>
+          <span className="lbl">{phone.replace(/^\+91\s*/, "")}</span>
         </a>
       </div>
     </header>
