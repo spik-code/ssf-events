@@ -45,7 +45,14 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) failed = "link_expired";
   } else {
-    failed = "missing_code";
+    // Neither shape in the query. Supabase's default template returns the
+    // session in the URL fragment instead, which the server never receives —
+    // hand off to the client page, which can read it. The browser carries the
+    // fragment across this redirect. If there is no fragment either, that page
+    // sends the visitor back to the login screen.
+    return NextResponse.redirect(
+      `${origin}/auth/confirm?next=${encodeURIComponent(safeNext)}`,
+    );
   }
 
   if (failed) {
