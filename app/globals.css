@@ -119,6 +119,17 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 }
 @media (max-width:1000px){ .nav{display:none} }
 @media (max-width:560px){ .bar .btn .lbl{display:none} .mark .txt span{display:none} }
+/* Small phones (320px). The wordmark, theme picker and call button together
+   overrun the bar and push the page wider than the screen, which makes the
+   browser zoom the whole site out. Tighten rather than drop anything. */
+@media (max-width:400px){
+  .bar-in{gap:10px}
+  .mark{gap:8px}
+  .mark .ring{width:26px; height:26px}
+  .mark .txt b{font-size:.78rem; letter-spacing:.12em}
+  .theme-pick{padding:8px 6px; font-size:.62rem}
+  .bar .btn{padding:.55rem .7rem}
+}
 
 /* ---------- hero ---------- */
 .hero{position:relative; overflow:hidden; border-bottom:1px solid var(--line)}
@@ -261,7 +272,15 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 .contact{display:grid; grid-template-columns:1fr 1fr; gap:44px}
 @media (max-width:820px){ .contact{grid-template-columns:1fr; gap:32px} }
 .form{display:grid; grid-template-columns:1fr 1fr; gap:15px}
-.field{display:flex; flex-direction:column; gap:7px}
+/* One column on phones. Without this the two columns cannot shrink past the
+   intrinsic width of the date input and the select (~485px together), which
+   makes the whole page wider than the screen — mobile browsers then zoom the
+   entire site out to fit, shrinking every bit of text on it. */
+@media (max-width:560px){ .form{grid-template-columns:1fr} }
+.field{display:flex; flex-direction:column; gap:7px; min-width:0}
+/* Grid and flex items default to min-width:auto, so a control with a wide
+   intrinsic size refuses to shrink. Let them. */
+.field input,.field select,.field textarea{min-width:0; max-width:100%}
 .field.full{grid-column:1 / -1}
 .field label{
   font:500 .66rem/1 "IBM Plex Mono", monospace; letter-spacing:.1em;
