@@ -155,6 +155,46 @@ handful per hour — wait and retry, or check spam.
 
 ---
 
+## Troubleshooting
+
+### Deployments show "Blocked"
+
+> The deployment was blocked because the commit email `…` could not be matched
+> to a GitHub account.
+
+Vercel refuses to build a commit whose author email does not belong to a GitHub
+account with access to the project. The site keeps serving the last successful
+deployment, so nothing looks broken — the code just silently stops updating.
+
+Check what git is stamping on your commits:
+
+```bash
+git config user.email
+```
+
+It must be an email **verified on your GitHub account**. The always-safe choice
+is GitHub's noreply address, which is guaranteed to match and does not publish a
+personal address:
+
+```bash
+git config user.email "<id>+<username>@users.noreply.github.com"
+```
+
+Find `<id>` with `gh api user -q .id` (this project uses
+`184151110+spik-code@users.noreply.github.com`). Alternatively, add the email you
+already commit with to GitHub under Settings → Emails and verify it.
+
+Fixing the config only affects **new** commits. Earlier commits stay blocked —
+that is fine, since Vercel deploys whatever the newest commit points at, and the
+next good commit ships the whole tree. To relabel the old ones too you would have
+to rewrite history and force-push.
+
+### Redeploy didn't pick up my code
+
+Vercel's **Redeploy** button rebuilds the **same commit** with the current
+environment variables. It is the right tool after an env-var change and the wrong
+one for shipping new code — for that, push a commit (or run `npx vercel --prod`).
+
 ## Notes
 
 - **Auto-deploy**: once connected, every push to `main` builds and deploys.
