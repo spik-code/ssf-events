@@ -172,17 +172,23 @@ Check what git is stamping on your commits:
 git config user.email
 ```
 
-It must be an email **verified on your GitHub account**. The always-safe choice
-is GitHub's noreply address, which is guaranteed to match and does not publish a
-personal address:
+It must be an email **verified on your GitHub account**. This project commits as
+`vilasvillu715@gmail.com`, the address on the `spik-code` account:
+
+```bash
+git config --global user.email "vilasvillu715@gmail.com"
+```
+
+If a personal address in the commit log is not wanted, GitHub's noreply address
+also always matches and keeps the real address private — find the id with
+`gh api user -q .id`:
 
 ```bash
 git config user.email "<id>+<username>@users.noreply.github.com"
 ```
 
-Find `<id>` with `gh api user -q .id` (this project uses
-`184151110+spik-code@users.noreply.github.com`). Alternatively, add the email you
-already commit with to GitHub under Settings → Emails and verify it.
+Either way the address has to be one GitHub already knows about; add and verify
+it under GitHub → Settings → Emails first if it is new.
 
 Fixing the config only affects **new** commits. Earlier commits stay blocked —
 that is fine, since Vercel deploys whatever the newest commit points at, and the
