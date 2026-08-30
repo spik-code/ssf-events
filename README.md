@@ -2,6 +2,11 @@
 
 Wedding &amp; event decor, Kolar &amp; Bengaluru. Next.js 16 + Supabase + ImageKit.
 
+**Docs:** [`docs/admin-guide.md`](docs/admin-guide.md) — how the owner uses the
+dashboard, with screenshots · [`docs/PROJECT-LOG.md`](docs/PROJECT-LOG.md) — what
+was built, the bugs found, and what is still open · [`DEPLOY.md`](DEPLOY.md) —
+hosting and deployment.
+
 ## Running it
 
 ```bash
@@ -159,12 +164,20 @@ never shows a placeholder review:
 
 ### Turning on automatic review pulling
 
-Only one thing is still missing: a Places API key.
+`/api/reviews/sync` talks to **Places API (New)** and falls back to the legacy
+API, so it works whichever a project has enabled. On failure it returns
+`googleSaid` with each API's real status and message.
 
-1. Go to [console.cloud.google.com](https://console.cloud.google.com), enable the
-   **Places API**, create an API key.
-2. Put it in `GOOGLE_PLACES_API_KEY` in `.env.local`.
-3. Call `POST /api/reviews/sync`, or wire it to a daily Vercel Cron.
+1. [console.cloud.google.com](https://console.cloud.google.com) → **attach a
+   billing account to the project**. Google refuses every Places request without
+   one, whatever the key says. Usage here is ~30 requests/month, comfortably
+   inside the free credit.
+2. Enable **Places API (New)** and create a key (check its API restrictions).
+3. Set `GOOGLE_PLACES_API_KEY` in Vercel and `.env.local`.
+4. Call `POST /api/reviews/sync`, or wire it to a daily Vercel Cron.
+
+For a handful of reviews this is disproportionate — adding them by hand in
+`/admin/reviews` reaches the same place with no billing account.
 
 The Place ID does **not** need to be looked up by hand — a `g.page` link only
 yields a CID, so the sync route resolves the Place ID from the business name and
@@ -297,6 +310,7 @@ Server actions live next to each route in `actions.ts` and every one begins with
 
 ```
 proxy.ts            request gate — session refresh + /admin redirect
+docs/               PROJECT-LOG.md (what was built and why) + admin-guide.md
 app/                public routes, API handlers, globals.css
 app/privacy/        the DPDP privacy notice
 app/admin/          login page, auth callback, (dash)/ route group
