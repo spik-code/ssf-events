@@ -118,7 +118,7 @@ export default async function Home() {
 
         {/* ── THE WORK ─────────────────────────────────────────── */}
         <section id="work" className="band wrap">
-          <header className="band-head reveal in">
+          <header className="band-head reveal">
             <p className="eyebrow">
               <span className="tick" /> The work
             </p>
@@ -132,7 +132,7 @@ export default async function Home() {
 
         {/* ── SERVICES ─────────────────────────────────────────── */}
         <section id="services" className="band wrap">
-          <header className="band-head reveal in">
+          <header className="band-head reveal">
             <p className="eyebrow">
               <span className="tick" /> What we do
             </p>
@@ -143,7 +143,7 @@ export default async function Home() {
               date and the hall; we quote for exactly what that function needs.
             </p>
           </header>
-          <div className="svc reveal in">
+          <div className="svc reveal">
             {services.map((s, i) => (
               <div className="svc-item" key={s.id}>
                 <span className="n">{String(i + 1).padStart(2, "0")}</span>
@@ -156,7 +156,7 @@ export default async function Home() {
 
         {/* ── REEL ─────────────────────────────────────────────── */}
         <section id="reel" className="band wrap">
-          <header className="band-head reveal in">
+          <header className="band-head reveal">
             <p className="eyebrow">
               <span className="tick" /> On camera
             </p>
@@ -181,7 +181,7 @@ export default async function Home() {
         {/* ── ABOUT ────────────────────────────────────────────── */}
         <section id="about" className="band wrap">
           <div className="about">
-            <div className="badge reveal in">
+            <div className="badge reveal">
               <Image
                 src="/ssf/brand/logo.webp"
                 alt={`${SITE.name} — ${SITE.legalName} crest`}
@@ -191,7 +191,7 @@ export default async function Home() {
                 style={{ width: "100%", height: "auto" }}
               />
             </div>
-            <div className="reveal in">
+            <div className="reveal">
               <p className="eyebrow" style={{ marginBottom: 16 }}>
                 <span className="tick" /> The name
               </p>
@@ -214,7 +214,7 @@ export default async function Home() {
 
         {/* ── ENQUIRE ──────────────────────────────────────────── */}
         <section id="enquire" className="band wrap">
-          <header className="band-head reveal in">
+          <header className="band-head reveal">
             <p className="eyebrow">
               <span className="tick" /> Enquire
             </p>
@@ -227,7 +227,7 @@ export default async function Home() {
           <div className="contact">
             <EnquiryForm whatsapp={contact.whatsapp} />
 
-            <div className="rows reveal in">
+            <div className="rows reveal">
               <div className="crow">
                 <span className="ic">
                   <PhoneIcon />

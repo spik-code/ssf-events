@@ -29,7 +29,7 @@ export function Reel({ clips }: { clips: ReelClip[] }) {
 
   return (
     <>
-      <div className="reel reveal in">
+      <div className="reel reveal">
         {clips.map((c) => (
           <button
             key={c.src}

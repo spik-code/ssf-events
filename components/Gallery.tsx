@@ -33,7 +33,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
         ))}
       </div>
 
-      <div className="gallery reveal in">
+      <div className="gallery reveal">
         {items.map((item) => (
           <figure key={item.id} hidden={!visible(item)}>
             <Image

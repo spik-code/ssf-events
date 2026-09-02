@@ -30,7 +30,7 @@ export function Reviews({
   if (!hasReviews) {
     return (
       <section id="reviews" className="band wrap">
-        <div className="ask reveal in">
+        <div className="ask reveal">
           <div className="ask-body">
             <p className="eyebrow">
               <span className="tick" /> Reviews
@@ -72,7 +72,7 @@ export function Reviews({
   // ── State 1: real reviews ──────────────────────────────────────────
   return (
     <section id="reviews" className="band wrap">
-      <header className="band-head reveal in">
+      <header className="band-head reveal">
         <p className="eyebrow">
           <span className="tick" /> Reviews
         </p>
@@ -88,7 +88,7 @@ export function Reviews({
         )}
       </header>
 
-      <div className="revs reveal in">
+      <div className="revs reveal">
         {reviews.map((r) => (
           <blockquote className="rev" key={r.id}>
             <div className="rev-top">
@@ -109,7 +109,7 @@ export function Reviews({
       </div>
 
       {reviewsUrl && (
-        <p className="rev-cta reveal in">
+        <p className="rev-cta reveal">
           <a className="btn btn-ghost" href={reviewsUrl} target="_blank" rel="noopener noreferrer">
             <GoogleGlyph />
             Leave us a review

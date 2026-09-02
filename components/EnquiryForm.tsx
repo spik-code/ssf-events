@@ -123,7 +123,7 @@ export function EnquiryForm({ whatsapp = SITE.whatsapp }: { whatsapp?: string })
 
   return (
     <>
-      <form className="form reveal in" ref={formRef} onSubmit={onSubmit} noValidate>
+      <form className="form reveal" ref={formRef} onSubmit={onSubmit} noValidate>
         <div className="field">
           <label htmlFor="f-name">Your name</label>
           <input id="f-name" name="name" type="text" autoComplete="name" required />

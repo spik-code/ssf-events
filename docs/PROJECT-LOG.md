@@ -153,6 +153,15 @@ height is 39px — 13px short of clearing its `bottom: 26px` offset. A small dar
 empty rounded box was visible under the fold on every page, in both themes,
 from the first deploy. It now parks a full height plus its own offset.
 
+**The scroll-reveal system was shipped permanently switched on.** `globals.css`
+carried a complete `.reveal` / `.reveal.in` pair from the first commit and
+fifteen elements across the page were marked with it — every band heading, the
+gallery, services, reel, reviews, about, the enquiry form. Every one of them
+rendered `reveal in` from the server, and there was no `IntersectionObserver`
+anywhere in the tree, so the class pair never toggled and nothing ever moved.
+Someone built the reveal and never wired up the half that fires it. Now wired,
+in `components/RevealOnScroll.tsx`.
+
 **No favicon** — a 404 on every page load.
 
 ---
@@ -214,6 +223,7 @@ there are no passwords).
 | 13 | `0d09713` | Stop phones zooming the site out |
 | 14 | `a27ec21` | Reviews sync on Places API (New) |
 | 15 | `4f45aa4` | Scroll-expanding crest hero; empty toast pill |
+| 16 | | Wire up the reveal-on-scroll that was never fired |
 
 ---
 
@@ -270,3 +280,14 @@ there are no passwords).
 - **A sticky element's `top` still applies when you make it `relative`.** Turning
   off `position: sticky` is two properties, not one — leave `top` set and the
   box is offset by that much in normal flow.
+- **`IntersectionObserver` misses anything the page jumps over.** Clicking a nav
+  anchor moves the page in a single frame, so every band in between goes from
+  below the viewport to above it without ever being sampled as intersecting —
+  no callback fires and those bands stay hidden for the rest of the visit. The
+  reveal sweeps element positions on scroll instead, which catches anything
+  whose top has passed the line including everything skipped. On a one-page
+  site built out of `#` anchors this is the common case, not an edge case.
+- **Never let JavaScript be what un-hides your content.** The reveal's hidden
+  state is gated on a `.js-reveal` class that a boot script in the layout sets
+  before first paint, the same trick the theme uses. Without it, JavaScript
+  failing to load would leave every band on the page invisible.
