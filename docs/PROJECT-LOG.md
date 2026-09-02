@@ -223,7 +223,7 @@ there are no passwords).
 | 13 | `0d09713` | Stop phones zooming the site out |
 | 14 | `a27ec21` | Reviews sync on Places API (New) |
 | 15 | `4f45aa4` | Scroll-expanding crest hero; empty toast pill |
-| 16 | | Wire up the reveal-on-scroll that was never fired |
+| 16 | `bdc208a` | Wire up the reveal-on-scroll that was never fired |
 
 ---
 
