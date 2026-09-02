@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Header } from "@/components/Header";
+import { ScrollExpandHero } from "@/components/ScrollExpandHero";
 import { Gallery } from "@/components/Gallery";
 import { Reel } from "@/components/Reel";
 import { EnquiryForm } from "@/components/EnquiryForm";
@@ -76,42 +77,36 @@ export default async function Home() {
         <span id="top" />
 
         {/* ── HERO ─────────────────────────────────────────────── */}
-        <section className="hero">
-          <div className="hero-media" aria-hidden="true">
-            <Image
-              src={settings.hero_image_url}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-          <div className="wrap hero-in">
-            <p className="eyebrow">
+        {/* Scroll-driven: the crest expands out of the photograph while the
+            headline parts around it. Everything below is the copy it hands
+            over to. */}
+        <ScrollExpandHero
+          bgSrc={settings.hero_image_url}
+          eyebrow={
+            <>
               <span className="tick" /> Wedding &amp; event decor &nbsp;·&nbsp; Kolar &amp;
               Bengaluru, Karnataka
-            </p>
-            <h1 className="h1">
-              {headLead}. <em className="script">{headTail}</em>
-            </h1>
-            <p className="lede">{settings.hero_subcopy}</p>
-            <div className="hero-cta">
-              <a className="btn btn-primary" href="#enquire">
-                <ChatIcon />
-                Plan your event
-              </a>
-              <a className="btn btn-ghost" href="#work">
-                See recent setups
-              </a>
-            </div>
-            <ul className="hero-tags">
-              {TAGS.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
+            </>
+          }
+          headLead={headLead}
+          headTail={headTail}
+        >
+          <p className="lede">{settings.hero_subcopy}</p>
+          <div className="hero-cta">
+            <a className="btn btn-primary" href="#enquire">
+              <ChatIcon />
+              Plan your event
+            </a>
+            <a className="btn btn-ghost" href="#work">
+              See recent setups
+            </a>
           </div>
-        </section>
+          <ul className="hero-tags">
+            {TAGS.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </ScrollExpandHero>
 
         {/* ── PLACES MARQUEE ───────────────────────────────────── */}
         <div className="strip" aria-hidden="true">

@@ -132,11 +132,27 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 }
 
 /* ---------- hero ---------- */
-.hero{position:relative; overflow:hidden; border-bottom:1px solid var(--line)}
-.hero-media{position:absolute; inset:0; z-index:0}
-.hero-media img{width:100%; height:100%; object-fit:cover;
+/* Scroll-expanding crest. `--p` runs 0 → 1 across the section's travel and is
+   written by components/ScrollExpandHero.tsx. The 0 declared here is what
+   renders before hydration, with JavaScript off, and under reduced motion —
+   every animated value below is a calc() off it, so the resting frame is a
+   complete hero on its own. */
+/* `--bar` is the sticky top bar's height, remeasured by the component so the
+   stage pins directly under it rather than sliding beneath the blur. */
+.xhero{--p:0; --bar:64px; position:relative; border-bottom:1px solid var(--line)}
+/* The runway. Just over one extra screen of scroll completes the expansion. */
+.xhero-track{height:216vh}
+.xhero-stage{
+  position:sticky; top:var(--bar); height:calc(100dvh - var(--bar)); overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+  padding-block:clamp(78px,12vh,128px) clamp(26px,6vh,52px);
+  padding-inline:clamp(20px,5vw,56px);
+}
+
+.xhero-media{position:absolute; inset:0; z-index:0; opacity:calc(1 - var(--p) * .86)}
+.xhero-media img{width:100%; height:100%; object-fit:cover;
   animation:kb 22s ease-in-out infinite alternate}
-.hero-media::after{
+.xhero-media::after{
   content:""; position:absolute; inset:0;
   background:linear-gradient(180deg,
     color-mix(in srgb, var(--paper) 62%, transparent) 0%,
@@ -144,10 +160,78 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
     var(--paper) 100%);
 }
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.08)}}
-.hero-in{position:relative; z-index:1; padding-block:clamp(64px,12vw,132px)}
-.hero .eyebrow{margin-bottom:22px}
-.hero .h1{margin-bottom:22px; max-width:19ch}
-.hero .lede{margin-bottom:30px}
+
+/* The crest. Sits high in the resting frame so the headline below it is clear,
+   then settles to centre as it grows. Capped on both axes so it can never
+   outgrow the viewport. */
+.xhero-card{
+  --w0:clamp(178px,46vw,286px);
+  --w1:min(92vw, 1180px, calc(74dvh * 1.84));
+  position:absolute; top:50%; left:50%; z-index:1;
+  width:calc(var(--w0) + (var(--w1) - var(--w0)) * var(--p));
+  /* Wider than the artwork's own 1.64 on purpose: the crest is a frame grab
+     with pale letterbox edges baked in, and object-fit:cover trims them off
+     top and bottom at every size. Keep the two in step if the logo changes. */
+  aspect-ratio:1.84;
+  transform:translate(-50%, calc(-50% - 7dvh * (1 - var(--p))));
+  border:1px solid var(--line); border-radius:calc(14px + 8px * var(--p));
+  overflow:hidden; background:#141425; box-shadow:var(--shadow);
+}
+
+.xhero-eyebrow,
+.xhero-foot{position:relative; z-index:2}
+.xhero-foot{
+  display:flex; flex-direction:column; align-items:center; gap:clamp(18px,3vh,30px);
+}
+/* Eyebrow and scroll hint clear out early — the last frame is the crest alone. */
+.xhero-eyebrow{opacity:clamp(0, calc(1 - var(--p) * 2.6), 1)}
+.xhero-hint{
+  display:flex; flex-direction:column; align-items:center; gap:9px;
+  font:500 .68rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft);
+  opacity:clamp(0, calc(1 - var(--p) * 2.6), 1);
+}
+.xhero-hint::after{
+  content:""; width:1px; height:30px;
+  background:linear-gradient(var(--ink-soft), transparent);
+  animation:drop 1.9s ease-in-out infinite;
+}
+@keyframes drop{
+  0%,100%{transform:translateY(-5px); opacity:.3}
+  50%{transform:translateY(4px); opacity:1}
+}
+
+/* The headline parts around the crest, then hands the screen over to it. */
+.xhero-title{
+  display:flex; flex-direction:column; align-items:center; gap:.06em;
+  text-align:center; max-width:min(94vw,20ch);
+  opacity:clamp(0, calc(1 - var(--p) * 1.9), 1);
+}
+.xhero-lead{display:block; transform:translateX(calc(var(--p) * -48vw)); will-change:transform}
+.xhero-tail{display:block; transform:translateX(calc(var(--p) * 48vw)); will-change:transform}
+
+/* The copy the expanded crest hands over to. */
+.xhero-in{
+  position:relative; z-index:1; text-align:center;
+  padding-block:clamp(46px,8vw,88px) clamp(56px,10vw,112px);
+}
+.xhero-in .lede{margin:0 auto 30px}
+.xhero-in .hero-cta,
+.xhero-in .hero-tags{justify-content:center}
+
+/* Reduced motion: no runway, no sticky stage — the resting frame, stacked. */
+.xhero.is-static .xhero-track{height:auto}
+/* Both of these stay positioned even with the travel gone: the stage is what
+   the background photo's inset:0 resolves against, and the card is what the
+   crest's fill image resolves against. Drop either to `static` and the images
+   escape to the section box and cover the copy below. */
+.xhero.is-static .xhero-stage{
+  position:relative; top:auto; height:auto; gap:clamp(24px,5vw,38px);
+  padding-block:clamp(64px,12vw,132px);
+}
+.xhero.is-static .xhero-card{position:relative; top:auto; left:auto; transform:none}
+.xhero.is-static .xhero-hint{display:none}
+
 .hero-cta{display:flex; flex-wrap:wrap; gap:13px}
 .hero-tags{
   display:flex; flex-wrap:wrap; gap:8px 8px; margin-top:34px; list-style:none; padding:0;
@@ -156,6 +240,21 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
   font:400 .68rem/1 "IBM Plex Mono", monospace; letter-spacing:.08em; text-transform:uppercase;
   padding:8px 12px; border:1px solid var(--line); border-radius:999px;
   background:color-mix(in srgb, var(--card) 70%, transparent); color:var(--ink-soft);
+}
+
+/* Phones: a shorter runway, and the crest starts smaller so the headline
+   underneath it still has room. */
+@media (max-width:560px){
+  .xhero-track{height:184vh}
+  /* The crest cannot grow taller without cropping its own artwork, so on a
+     narrow screen it finishes edge to edge instead — a full-bleed band reads
+     as deliberate where a small floating card looks stranded. */
+  .xhero-card{
+    --w0:clamp(118px,40vw,178px); --w1:100vw;
+    border-radius:calc(16px * (1 - var(--p))); border-left:0; border-right:0;
+  }
+  .xhero-lead{transform:translateX(calc(var(--p) * -62vw))}
+  .xhero-tail{transform:translateX(calc(var(--p) * 62vw))}
 }
 
 /* ---------- marquee ---------- */
@@ -343,7 +442,7 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 
 /* ---------- toast ---------- */
 .toast{
-  position:fixed; left:50%; bottom:26px; transform:translate(-50%,150%);
+  position:fixed; left:50%; bottom:26px; transform:translate(-50%,calc(100% + 26px));
   background:var(--ink); color:var(--paper);
   font:500 .74rem/1.4 "IBM Plex Mono", monospace; letter-spacing:.02em;
   padding:13px 20px; border-radius:9px; box-shadow:var(--shadow);

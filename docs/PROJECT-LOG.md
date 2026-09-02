@@ -35,8 +35,8 @@ Built from the real Instagram content: 20 gallery photos and 16 reel clips, all
 genuine SSF Events work, uploaded to ImageKit. Hand-written CSS, two themes
 (cotton / candlelight), no UI framework.
 
-Sections: hero, gallery with category filters, seven services, reel strip with a
-lightbox, reviews, about, enquiry form.
+Sections: scroll-expanding crest hero, gallery with category filters, seven
+services, reel strip with a lightbox, reviews, about, enquiry form.
 
 Decisions worth keeping:
 
@@ -46,6 +46,16 @@ Decisions worth keeping:
   through caterers we work with regularly" — never implying an in-house kitchen.
 - **Nothing invented.** No stock photos, no placeholder testimonials, no sample
   reviews. Every image is their work; every quote must be a real customer's words.
+- **The hero is scroll-driven, not scroll-jacked.** The SSF crest starts as a
+  small badge over the venue photograph and expands towards full-bleed as you
+  scroll, the headline parting around it. The reference implementation for this
+  effect swallows wheel and touch events and calls `window.scrollTo(0, 0)` on
+  every scroll until the animation finishes, which would have broken the nav's
+  `#` anchors, keyboard paging and find-in-page — on a site whose whole purpose
+  is getting someone to the enquiry form. Ours is a section taller than the
+  viewport with a sticky stage inside it, so progress is read from where the
+  page already is. Nothing calls `preventDefault`; the page scrolls normally
+  the entire time.
 
 ## Phase 2 — the admin
 
@@ -137,6 +147,12 @@ report exactly what Google said.
 **Checkboxes rendered a red X when ticked.** Two CSS gradients formed an X rather
 than a checkmark — the opposite of "selected". Replaced with an SVG tick.
 
+**An empty toast pill sat at the bottom of every page.** The enquiry-form toast
+parks itself off-screen with `translate(-50%, 150%)`, but 150% of its own 26px
+height is 39px — 13px short of clearing its `bottom: 26px` offset. A small dark
+empty rounded box was visible under the fold on every page, in both themes,
+from the first deploy. It now parks a full height plus its own offset.
+
 **No favicon** — a 404 on every page load.
 
 ---
@@ -197,6 +213,7 @@ there are no passwords).
 | 12 | `66d3455` | Complete sign-in from the URL fragment |
 | 13 | `0d09713` | Stop phones zooming the site out |
 | 14 | `a27ec21` | Reviews sync on Places API (New) |
+| 15 | | Scroll-expanding crest hero; empty toast pill |
 
 ---
 
@@ -244,3 +261,12 @@ there are no passwords).
 - **`app/icon.svg` is served at `/icon.svg`**, not `/icon`.
 - **Grid and flex items default to `min-width:auto`**, so a wide control stops the
   whole page shrinking on mobile — and browsers zoom out rather than overflow.
+- **`next/image` with `fill` needs a positioned parent, or it escapes.** The
+  reduced-motion branch of the hero originally dropped the stage and the crest
+  card to `position: static`; both of their `fill` images then resolved against
+  the section instead and covered the copy below it. Only visitors who ask for
+  less motion would ever have seen it. If you switch a positioned box to
+  `static`, check what was absolutely positioned inside it.
+- **A sticky element's `top` still applies when you make it `relative`.** Turning
+  off `position: sticky` is two properties, not one — leave `top` set and the
+  box is offset by that much in normal flow.
