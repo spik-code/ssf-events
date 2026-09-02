@@ -213,7 +213,7 @@ there are no passwords).
 | 12 | `66d3455` | Complete sign-in from the URL fragment |
 | 13 | `0d09713` | Stop phones zooming the site out |
 | 14 | `a27ec21` | Reviews sync on Places API (New) |
-| 15 | | Scroll-expanding crest hero; empty toast pill |
+| 15 | `4f45aa4` | Scroll-expanding crest hero; empty toast pill |
 
 ---
 
