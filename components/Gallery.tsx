@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { GALLERY_FILTERS } from "@/lib/content";
 import type { GalleryItem } from "@/lib/types";
@@ -11,6 +11,8 @@ import type { GalleryItem } from "@/lib/types";
  */
 export function Gallery({ items }: { items: GalleryItem[] }) {
   const [active, setActive] = useState("all");
+  const [filtered, setFiltered] = useState(false);
+  let shown = 0;
 
   const visible = (item: GalleryItem) => {
     if (active === "all") return true;
@@ -26,16 +28,28 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
             key={f.key}
             className={`chip${active === f.key ? " is-on" : ""}`}
             aria-pressed={active === f.key}
-            onClick={() => setActive(f.key)}
+            onClick={() => {
+              setActive(f.key);
+              setFiltered(true);
+            }}
           >
             {f.label}
           </button>
         ))}
       </div>
 
-      <div className="gallery reveal">
+      {/* Each photo rises on its own as it is scrolled to. Once a filter has
+          been pressed, the key changes with the filter so the photos are
+          rebuilt and replay the settle animation; they drop `.reveal`,
+          which RevealOnScroll would never see on a rebuilt element. */}
+      <div className={`gallery${filtered ? " is-filtered" : ""}`}>
         {items.map((item) => (
-          <figure key={item.id} hidden={!visible(item)}>
+          <figure
+            key={filtered ? `${active}:${item.id}` : item.id}
+            hidden={!visible(item)}
+            className={filtered ? undefined : "reveal"}
+            style={{ "--i": visible(item) ? shown++ : 0 } as CSSProperties}
+          >
             <Image
               src={item.imagekit_url}
               alt={item.alt || item.caption || "SSF Events decor setup"}

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { Header } from "@/components/Header";
 import { ScrollExpandHero } from "@/components/ScrollExpandHero";
@@ -143,9 +144,9 @@ export default async function Home() {
               date and the hall; we quote for exactly what that function needs.
             </p>
           </header>
-          <div className="svc reveal">
+          <div className="svc reveal stagger">
             {services.map((s, i) => (
-              <div className="svc-item" key={s.id}>
+              <div className="svc-item" key={s.id} style={{ "--i": i } as CSSProperties}>
                 <span className="n">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="h3">{s.name}</h3>
                 <p>{s.description}</p>

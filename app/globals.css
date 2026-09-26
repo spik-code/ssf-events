@@ -466,13 +466,49 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
    so with JavaScript blocked nothing is ever hidden and the page stays
    readable, and because the class lands before paint rather than at
    hydration, nothing flashes in and back out. components/RevealOnScroll.tsx
-   adds `.in` as each element comes into view. */
-.reveal{transition:opacity .6s ease, transform .6s ease}
-.js-reveal .reveal{opacity:0; transform:translateY(16px)}
-.js-reveal .reveal.in{opacity:1; transform:none}
+   adds `.in` as each element comes into view.
+   The motion is a short rise that settles on a long ease-out while sharpening
+   from a light blur. It ends on `filter:none` rather than blur(0) so a
+   finished element carries no filter, which would otherwise trap anything
+   fixed-position inside it. */
+:root{--settle:cubic-bezier(.22,1,.36,1)}
+.reveal{transition:opacity .9s var(--settle), transform .9s var(--settle), filter .9s var(--settle)}
+.js-reveal .reveal{opacity:0; transform:translateY(18px); filter:blur(6px)}
+.js-reveal .reveal.in{opacity:1; transform:none; filter:none}
+
+/* A `.reveal.stagger` container holds still and its children arrive one after
+   another. Each child carries --i, its position, set inline; the delay stops
+   growing after eight so a long row never keeps anyone waiting. */
+.js-reveal .reveal.stagger{opacity:1; transform:none; filter:none}
+.js-reveal .stagger > *{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .8s var(--settle), transform .9s var(--settle);
+  transition-delay:calc(min(var(--i, 0), 8) * 70ms);
+}
+.js-reveal .stagger.in > *{opacity:1; transform:none}
+/* The services grid draws its dividing lines with its own background, so
+   fading whole cells would flash a solid block. The cells stay and their
+   contents arrive instead, inheriting --i from the cell. */
+.js-reveal .svc.stagger > *{opacity:1; transform:none}
+.js-reveal .svc.stagger .svc-item > *{
+  opacity:0; transform:translateY(14px);
+  transition:opacity .8s var(--settle), transform .9s var(--settle);
+  transition-delay:calc(min(var(--i, 0), 8) * 70ms);
+}
+.js-reveal .svc.stagger.in .svc-item > *{opacity:1; transform:none}
+
+/* Pressing a gallery filter rebuilds the photos, which then settle in turn. */
+.gallery.is-filtered figure{
+  animation:settle .7s var(--settle) both;
+  animation-delay:calc(min(var(--i, 0), 8) * 60ms);
+}
+@keyframes settle{from{opacity:0; transform:translateY(18px) scale(.98)}}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important; transition:none !important}
-  .js-reveal .reveal{opacity:1; transform:none}
+  .js-reveal .reveal, .js-reveal .stagger > *, .js-reveal .svc.stagger .svc-item > *{
+    opacity:1; transform:none; filter:none;
+  }
   .xhero-media img{animation:none}
 }
 

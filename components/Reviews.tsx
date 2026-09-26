@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { GoogleGlyph, StarRow, PinIcon } from "./icons";
 import type { Review } from "@/lib/types";
 
@@ -88,9 +89,9 @@ export function Reviews({
         )}
       </header>
 
-      <div className="revs reveal">
-        {reviews.map((r) => (
-          <blockquote className="rev" key={r.id}>
+      <div className="revs reveal stagger">
+        {reviews.map((r, i) => (
+          <blockquote className="rev" key={r.id} style={{ "--i": i } as CSSProperties}>
             <div className="rev-top">
               <StarRow rating={r.rating} />
               {r.source === "google" && (

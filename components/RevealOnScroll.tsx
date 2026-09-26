@@ -26,7 +26,7 @@ const TRIGGER = 0.9;
  * without ever being sampled as intersecting — no callback fires, and those
  * bands stay invisible for the rest of the visit. A position sweep reveals
  * anything whose top has passed the line, including everything skipped over.
- * With about fifteen elements, each dropped from the list as it fires, the
+ * With a few dozen elements, each dropped from the list as it fires, the
  * cost is a handful of rect reads on the frames that need them.
  */
 export function RevealOnScroll() {

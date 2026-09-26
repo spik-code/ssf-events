@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { PlayIcon, CloseIcon } from "./icons";
 import type { ReelClip } from "@/lib/content";
 
@@ -29,10 +29,11 @@ export function Reel({ clips }: { clips: ReelClip[] }) {
 
   return (
     <>
-      <div className="reel reveal">
-        {clips.map((c) => (
+      <div className="reel reveal stagger">
+        {clips.map((c, i) => (
           <button
             key={c.src}
+            style={{ "--i": i } as CSSProperties}
             onClick={(e) => {
               lastFocus.current = e.currentTarget;
               setOpen(c.src);
