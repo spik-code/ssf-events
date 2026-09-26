@@ -19,6 +19,17 @@ export function Footer({ home = false }: { home?: boolean }) {
         <Link className="foot-link" href="/privacy">
           Privacy
         </Link>
+        <span>
+          Managed by{" "}
+          <a
+            className="foot-link"
+            href="https://kalpaforge.com"
+            target="_blank"
+            rel="noopener"
+          >
+            kalpaforge.com
+          </a>
+        </span>
       </div>
     </footer>
   );
