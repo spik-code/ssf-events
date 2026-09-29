@@ -22,7 +22,7 @@ cannot edit without a developer.
 | App | Next.js 16, App Router, Turbopack | Server Components fetch content per request, revalidated every 5 min |
 | Database | Supabase Postgres (`ydohhfpbmxwwjaalnpen`, Seoul / ap-northeast-2) | Row Level Security on every table |
 | Images | ImageKit (`ik.imagekit.io/4pihrvfy8a`) | Automatic resizing and format; DB stores the path only |
-| Video | `public/media` | 16 reel clips, ~133 MB, served statically |
+| Video | ImageKit (`/ssf/reels`), listed in the `reels` table | Owner uploads and replaces clips at `/admin/reels`; newest first |
 | Auth | Supabase magic links | One owner account, no passwords to leak |
 | Email | Resend | New-enquiry notification — **key not yet set** |
 | Hosting | Vercel, auto-deploy from `main` | |
@@ -246,10 +246,9 @@ there are no passwords).
 
 **Worth doing:**
 
-- Move the 133 MB of reel video to ImageKit video delivery. It is 96% of the
-  repository. **Not** Git LFS — GitHub's free LFS bandwidth is 1 GB/month and
-  Vercel refetches on cold builds, which would turn working deploys into metered
-  ones.
+- Delete the 5 unused clips left in `public/media` (`02_`, `04_`, `05_`, `11_`,
+  `21_`, ~53 MB). The 11 the site showed moved to ImageKit with the `reels`
+  table; these five were never on the page.
 - Password login for the admin instead of magic links — discussed, not built.
   Keep magic link as a fallback.
 - Booking-conversion UI on a won lead (`convertToBooking` exists, no button).

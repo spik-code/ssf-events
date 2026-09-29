@@ -1,7 +1,9 @@
 import { createServerClient } from "./supabase/server";
-import { GALLERY, SERVICES, SETTINGS } from "./content";
+import { GALLERY, SERVICES, SETTINGS, REEL, type ReelClip } from "./content";
+import { ikVideo, ikPoster } from "./imagekit";
 import type {
   GalleryItem,
+  ReelItem,
   Service,
   SiteSettings,
   Testimonial,
@@ -47,6 +49,27 @@ export async function getGallery(category?: string): Promise<GalleryItem[]> {
     return data as GalleryItem[];
   } catch {
     return category ? [] : FALLBACK_GALLERY;
+  }
+}
+
+/** Published reels, newest first, shaped for the <Reel> strip. */
+export async function getReels(): Promise<ReelClip[]> {
+  try {
+    const supabase = createServerClient();
+    const { data, error } = await supabase
+      .from("reels")
+      .select("*")
+      .eq("is_published", true)
+      .order("created_at", { ascending: false });
+
+    if (error || !data?.length) return REEL;
+    return (data as ReelItem[]).map((r) => ({
+      src: ikVideo(r.imagekit_url),
+      poster: ikPoster(r.imagekit_url, r.poster_url),
+      caption: r.caption ?? "",
+    }));
+  } catch {
+    return REEL;
   }
 }
 

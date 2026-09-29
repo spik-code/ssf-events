@@ -23,6 +23,17 @@ export interface GalleryItem {
   created_at: string;
 }
 
+export interface ReelItem {
+  id: string;
+  imagekit_url: string; // ImageKit path of the video, e.g. "/ssf/reels/x.mp4"
+  imagekit_file_id: string | null;
+  poster_url: string | null; // null → ImageKit's auto thumbnail
+  poster_file_id: string | null;
+  caption: string | null;
+  is_published: boolean;
+  created_at: string;
+}
+
 export interface Testimonial {
   id: string;
   couple_names: string;

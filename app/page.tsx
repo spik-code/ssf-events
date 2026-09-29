@@ -16,8 +16,14 @@ import {
   ListIcon,
   WhatsAppIcon,
 } from "@/components/icons";
-import { getGallery, getServices, getSettings, getReviews, averageRating } from "@/lib/queries";
-import { REEL } from "@/lib/content";
+import {
+  getGallery,
+  getServices,
+  getSettings,
+  getReviews,
+  getReels,
+  averageRating,
+} from "@/lib/queries";
 import { SITE } from "@/lib/site";
 import { resolveContact } from "@/lib/contact";
 
@@ -38,11 +44,12 @@ const TAGS = [
 const PLACES = "Kolar  ·  Bengaluru  ·  Bangarpet  ·  Avani  ·  Tumkur  ·  across Karnataka";
 
 export default async function Home() {
-  const [gallery, services, settings, reviews] = await Promise.all([
+  const [gallery, services, settings, reviews, reels] = await Promise.all([
     getGallery(),
     getServices(),
     getSettings(),
     getReviews(),
+    getReels(),
   ]);
 
   // Contact details come from site_settings when the admin has set them,
@@ -167,7 +174,7 @@ export default async function Home() {
               reels.
             </p>
           </header>
-          <Reel clips={REEL} />
+          <Reel clips={reels} />
         </section>
 
         {/* ── REVIEWS ──────────────────────────────────────────── */}
@@ -184,10 +191,10 @@ export default async function Home() {
           <div className="about">
             <div className="badge reveal">
               <Image
-                src="/ssf/brand/logo.webp"
+                src="/ssf/brand/logo-v2.webp"
                 alt={`${SITE.name} — ${SITE.legalName} crest`}
                 width={600}
-                height={380}
+                height={417}
                 sizes="(max-width: 760px) 90vw, 300px"
                 style={{ width: "100%", height: "auto" }}
               />

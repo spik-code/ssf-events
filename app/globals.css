@@ -166,16 +166,16 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
    outgrow the viewport. */
 .xhero-card{
   --w0:clamp(178px,46vw,286px);
-  --w1:min(92vw, 1180px, calc(74dvh * 1.84));
+  --w1:min(92vw, 1180px, calc(74dvh * 1.44));
   position:absolute; top:50%; left:50%; z-index:1;
   width:calc(var(--w0) + (var(--w1) - var(--w0)) * var(--p));
-  /* Wider than the artwork's own 1.64 on purpose: the crest is a frame grab
-     with pale letterbox edges baked in, and object-fit:cover trims them off
-     top and bottom at every size. Keep the two in step if the logo changes. */
-  aspect-ratio:1.84;
+  /* The artwork's own ratio (1254×871), so object-fit:cover crops nothing and
+     the ring, wordmark and stars all stay in frame. Keep the two in step if
+     the logo changes. Background is the artwork's navy, so no seam shows. */
+  aspect-ratio:1.44;
   transform:translate(-50%, calc(-50% - 7dvh * (1 - var(--p))));
   border:1px solid var(--line); border-radius:calc(14px + 8px * var(--p));
-  overflow:hidden; background:#141425; box-shadow:var(--shadow);
+  overflow:hidden; background:#000D41; box-shadow:var(--shadow);
 }
 
 .xhero-eyebrow,

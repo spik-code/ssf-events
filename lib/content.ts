@@ -1,4 +1,5 @@
 import type { GalleryItem, Service, SiteSettings } from "./types";
+import { ikVideo, ikPoster } from "./imagekit";
 
 /**
  * Canonical seed / fallback content.
@@ -70,25 +71,32 @@ export const SERVICE_NEEDS: { value: string; label: string }[] = [
   { value: "full", label: "Everything — full function" },
 ];
 
-/** Reel clips — served from /public/media in Phase 1 (moves to ImageKit video in Phase 2). */
+/** Reel clips. The live list is the `reels` table, managed at /admin/reels;
+ *  this is the fallback when Supabase is unreachable. Files are on ImageKit. */
 export interface ReelClip {
   src: string;
   poster: string;
   caption: string;
 }
 
+const reel = (key: string, caption: string): ReelClip => ({
+  src: ikVideo(`/ssf/reels/${key}.mp4`),
+  poster: ikPoster(`/ssf/reels/${key}.mp4`, `/ssf/reels/${key}_poster.jpg`),
+  caption,
+});
+
 export const REEL: ReelClip[] = [
-  { src: "/media/34_CwkNawOSHQH.mp4", poster: "/media/34_CwkNawOSHQH_poster.jpg", caption: "Baby shower · Kolar" },
-  { src: "/media/39_CoG8qUHDoGx.mp4", poster: "/media/39_CoG8qUHDoGx_poster.jpg", caption: "Anniversary · Tumkur" },
-  { src: "/media/07_C3xdNTuyJpI.mp4", poster: "/media/07_C3xdNTuyJpI_poster.jpg", caption: "Stage · Bangarpet" },
-  { src: "/media/14_C3mx-Tqrmo7.mp4", poster: "/media/14_C3mx-Tqrmo7_poster.jpg", caption: "Sri Nandini Palace" },
-  { src: "/media/09_C55DBR8r8HP.mp4", poster: "/media/09_C55DBR8r8HP_poster.jpg", caption: "Reception hall" },
-  { src: "/media/06_C3xezUTSmHo.mp4", poster: "/media/06_C3xezUTSmHo_poster.jpg", caption: "Floral stage" },
-  { src: "/media/10_C3_0KY8r_n-.mp4", poster: "/media/10_C3_0KY8r_n-_poster.jpg", caption: "Mandap detail" },
-  { src: "/media/27_CoiV1ZqjdVT.mp4", poster: "/media/27_CoiV1ZqjdVT_poster.jpg", caption: "Entrance decor" },
-  { src: "/media/28_CoiZEEcjw-l.mp4", poster: "/media/28_CoiZEEcjw-l_poster.jpg", caption: "Hall & seating" },
-  { src: "/media/03_C35NNM9v4R0.mp4", poster: "/media/03_C35NNM9v4R0_poster.jpg", caption: "Setup clip" },
-  { src: "/media/08_C7wveRZSl9e.mp4", poster: "/media/08_C7wveRZSl9e_poster.jpg", caption: "Evening lighting" },
+  reel("34_CwkNawOSHQH", "Baby shower · Kolar"),
+  reel("39_CoG8qUHDoGx", "Anniversary · Tumkur"),
+  reel("07_C3xdNTuyJpI", "Stage · Bangarpet"),
+  reel("14_C3mx-Tqrmo7", "Sri Nandini Palace"),
+  reel("09_C55DBR8r8HP", "Reception hall"),
+  reel("06_C3xezUTSmHo", "Floral stage"),
+  reel("10_C3_0KY8r_n-", "Mandap detail"),
+  reel("27_CoiV1ZqjdVT", "Entrance decor"),
+  reel("28_CoiZEEcjw-l", "Hall & seating"),
+  reel("03_C35NNM9v4R0", "Setup clip"),
+  reel("08_C7wveRZSl9e", "Evening lighting"),
 ];
 
 export const GALLERY_FILTERS: { key: string; label: string; match: string[] }[] = [

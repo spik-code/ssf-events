@@ -37,6 +37,18 @@ export function ik(path: string, t: IkTransform = {}): string {
   return `${ENDPOINT}${clean}?tr=${parts.join(",")}`;
 }
 
+/** Delivery URL for a stored video path, untransformed. */
+export function ikVideo(path: string): string {
+  if (/^https?:\/\//i.test(path)) return path;
+  return `${ENDPOINT}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+/** A reel's cover: its uploaded poster, else a frame ImageKit pulls from the video 1s in. */
+export function ikPoster(video: string, poster: string | null, width = 480): string {
+  if (poster) return ik(poster, { width, quality: 70 });
+  return `${ikVideo(video)}/ik-thumbnail.jpg?tr=so-1,w-${width}`;
+}
+
 /** next/image custom loader — keeps every <Image> on ImageKit's CDN + transforms. */
 export function imagekitLoader({
   src,

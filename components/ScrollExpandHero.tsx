@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 
 /** The crest, the same asset the About section badges. Dark indigo, gold ring. */
-const CREST = "/ssf/brand/logo.webp";
+const CREST = "/ssf/brand/logo-v2.webp";
 
 /**
  * The hero, choreographed by scroll position: the SSF crest starts as a small
