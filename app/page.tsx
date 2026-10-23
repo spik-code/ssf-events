@@ -24,7 +24,7 @@ import {
   getReels,
   averageRating,
 } from "@/lib/queries";
-import { SITE } from "@/lib/site";
+import { SITE, SITE_URL } from "@/lib/site";
 import { resolveContact } from "@/lib/contact";
 
 export const revalidate = 300;
@@ -64,6 +64,38 @@ export default async function Home() {
     contact.email,
   )}&su=${encodeURIComponent(`Enquiry for ${SITE.name}`)}`;
 
+  // LocalBusiness structured data, so Google can tie the site to the Maps
+  // listing. Address and Maps link come from the same site_settings rows.
+  const address = typeof settings.google_address === "string" ? settings.google_address : "";
+  const ikEndpoint = (
+    process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || "https://ik.imagekit.io/4pihrvfy8a"
+  ).replace(/\/$/, "");
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: SITE.name,
+    alternateName: SITE.legalName,
+    description:
+      "Stage, mandap and celebration decor for weddings, receptions, engagements, haldi, baby showers and birthdays.",
+    url: SITE_URL,
+    telephone: contact.phone,
+    email: contact.email,
+    image: `${ikEndpoint}/ssf/brand/logo-v2.webp`,
+    ...(address && {
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: address,
+        addressLocality: "Kolar",
+        addressRegion: "Karnataka",
+        postalCode: address.match(/\b\d{6}\b/)?.[0],
+        addressCountry: "IN",
+      },
+    }),
+    areaServed: ["Kolar", "Bengaluru", "Bangarpet", "Avani", "Tumkur", "Karnataka"],
+    ...(settings.google_maps_url && { hasMap: settings.google_maps_url }),
+    sameAs: [contact.instagram, settings.google_maps_url].filter(Boolean),
+  };
+
   // The headline reads "Life is an event. Make it memorable." — the second
   // sentence is set in the accent script face.
   const [headLead, ...headRest] = settings.hero_headline.split(". ");
@@ -71,6 +103,10 @@ export default async function Home() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <a className="skip" href="#main">
         Skip to content
       </a>

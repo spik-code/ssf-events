@@ -1,3 +1,6 @@
+/** The deployed origin, no trailing slash. Set NEXT_PUBLIC_SITE_URL in Vercel. */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+
 /** Business contact details, read from env so they are editable without a code change. */
 export const SITE = {
   name: "SSF Events",
