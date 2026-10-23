@@ -2,6 +2,9 @@ import type { CSSProperties } from "react";
 import { GoogleGlyph, StarRow, PinIcon } from "./icons";
 import type { Review } from "@/lib/types";
 
+/** How many review cards the homepage shows. */
+const SHOWN = 5;
+
 /**
  * Reviews section, with three states:
  *
@@ -71,6 +74,12 @@ export function Reviews({
   }
 
   // ── State 1: real reviews ──────────────────────────────────────────
+  // Show the best few — highest rating, then the most detailed — and send
+  // anyone who wants the rest to the full list on Google Maps.
+  const best = [...reviews]
+    .sort((a, b) => b.rating - a.rating || (b.text?.length ?? 0) - (a.text?.length ?? 0))
+    .slice(0, SHOWN);
+
   return (
     <section id="reviews" className="band wrap">
       <header className="band-head reveal">
@@ -90,7 +99,7 @@ export function Reviews({
       </header>
 
       <div className="revs reveal stagger">
-        {reviews.map((r, i) => (
+        {best.map((r, i) => (
           <blockquote className="rev" key={r.id} style={{ "--i": i } as CSSProperties}>
             <div className="rev-top">
               <StarRow rating={r.rating} />
@@ -109,12 +118,20 @@ export function Reviews({
         ))}
       </div>
 
-      {reviewsUrl && (
+      {(mapsUrl || reviewsUrl) && (
         <p className="rev-cta reveal">
-          <a className="btn btn-ghost" href={reviewsUrl} target="_blank" rel="noopener noreferrer">
-            <GoogleGlyph />
-            Leave us a review
-          </a>
+          {mapsUrl && (
+            <a className="btn btn-primary" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+              <PinIcon />
+              See all reviews on Google Maps
+            </a>
+          )}
+          {reviewsUrl && (
+            <a className="btn btn-ghost" href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+              <GoogleGlyph />
+              Leave us a review
+            </a>
+          )}
         </p>
       )}
     </section>

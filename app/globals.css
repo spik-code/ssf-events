@@ -524,12 +524,14 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 }
 .stars{display:inline-flex; gap:2px; color:var(--accent); line-height:0}
 
-.revs{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
-@media (max-width:900px){ .revs{grid-template-columns:1fr} }
+/* Masonry columns, so a long review doesn't stretch its short neighbours. */
+.revs{columns:3; column-gap:18px}
+@media (max-width:900px){ .revs{columns:1} }
 .rev{
   background:var(--card); border:1px solid var(--line); border-radius:12px;
   padding:24px 22px; box-shadow:var(--shadow);
-  display:flex; flex-direction:column; gap:14px; margin:0;
+  display:flex; flex-direction:column; gap:14px; margin:0 0 18px;
+  break-inside:avoid;
 }
 .rev-top{display:flex; align-items:center; justify-content:space-between; gap:12px}
 .rev-src{display:inline-flex; line-height:0; opacity:.9}
@@ -544,7 +546,7 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
   letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft);
 }
 .rev footer b{color:var(--ink); font-weight:600}
-.rev-cta{margin-top:26px}
+.rev-cta{margin-top:26px; display:flex; flex-wrap:wrap; gap:12px}
 .rev-cta .btn{gap:.6rem}
 
 /* ---------- service-need checkboxes ---------- */
