@@ -76,7 +76,8 @@ export default async function Home() {
     name: SITE.name,
     alternateName: SITE.legalName,
     description:
-      "Stage, mandap and celebration decor for weddings, receptions, engagements, haldi, baby showers and birthdays.",
+      "Since 1999, stage, mandap and celebration decor for 5,000+ weddings, plus receptions, engagements, haldi, baby showers and birthdays.",
+    foundingDate: "1999",
     url: SITE_URL,
     telephone: contact.phone,
     email: contact.email,
@@ -128,8 +129,8 @@ export default async function Home() {
           bgSrc={settings.hero_image_url}
           eyebrow={
             <>
-              <span className="tick" /> Wedding &amp; event decor &nbsp;·&nbsp; Kolar &amp;
-              Bengaluru, Karnataka
+              <span className="tick" /> Since 1999 &nbsp;·&nbsp; 5,000+ weddings &nbsp;·&nbsp;
+              Kolar &amp; Bengaluru
             </>
           }
           headLead={headLead}
@@ -245,6 +246,10 @@ export default async function Home() {
               <p>
                 {SITE.name} is the decor arm of <b>{SITE.legalName}</b>, working out of {SITE.base}{" "}
                 and taking functions across the district and into {SITE.serving}.
+              </p>
+              <p style={{ marginTop: 14 }}>
+                We have been decorating weddings <b>since 1999</b> &mdash; more than{" "}
+                <b>5,000 weddings</b> so far, from small house functions to full hall decor.
               </p>
               <p style={{ marginTop: 14 }}>
                 We are a hands-on team: the people who design your stage are the people who build it

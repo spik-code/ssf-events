@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s · SSF Events",
   },
   description:
-    "SSF Events (Sri Sai Flora Enterprises) — stage, mandap and celebration decor for weddings, receptions, engagements, haldi, baby showers and birthdays across Kolar, Bengaluru and Karnataka.",
+    "SSF Events (Sri Sai Flora Enterprises) — since 1999, 5,000+ weddings decorated. Stage, mandap and celebration decor for weddings, receptions, engagements, haldi, baby showers and birthdays across Kolar, Bengaluru and Karnataka.",
   keywords: [
     "wedding decor Kolar",
     "wedding decoration Bengaluru",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "SSF Events",
     title: "SSF Events — Wedding & Event Decor · Kolar & Bengaluru",
     description:
-      "Stage, mandap and celebration decor across Kolar, Bengaluru and Karnataka. Life is an event — make it memorable.",
+      "Since 1999 · 5,000+ weddings. Stage, mandap and celebration decor across Kolar, Bengaluru and Karnataka. Life is an event — make it memorable.",
     url: SITE_URL,
   },
   alternates: { canonical: "/" },
