@@ -3,10 +3,10 @@ import Image from "next/image";
 import { Header } from "@/components/Header";
 import { ScrollExpandHero } from "@/components/ScrollExpandHero";
 import { Gallery } from "@/components/Gallery";
-import { Reel } from "@/components/Reel";
 import { EnquiryForm } from "@/components/EnquiryForm";
 import { Reviews } from "@/components/Reviews";
 import { Footer } from "@/components/Footer";
+import { PointerGlow } from "@/components/PointerGlow";
 import {
   PhoneIcon,
   ChatIcon,
@@ -21,7 +21,6 @@ import {
   getServices,
   getSettings,
   getReviews,
-  getReels,
   averageRating,
 } from "@/lib/queries";
 import { SITE, SITE_URL } from "@/lib/site";
@@ -44,12 +43,11 @@ const TAGS = [
 const PLACES = "Kolar  ·  Bengaluru  ·  Bangarpet  ·  Avani  ·  Tumkur  ·  across Karnataka";
 
 export default async function Home() {
-  const [gallery, services, settings, reviews, reels] = await Promise.all([
+  const [gallery, services, settings, reviews] = await Promise.all([
     getGallery(),
     getServices(),
     getSettings(),
     getReviews(),
-    getReels(),
   ]);
 
   // Contact details come from site_settings when the admin has set them,
@@ -197,21 +195,6 @@ export default async function Home() {
               </div>
             ))}
           </div>
-        </section>
-
-        {/* ── REEL ─────────────────────────────────────────────── */}
-        <section id="reel" className="band wrap">
-          <header className="band-head reveal">
-            <p className="eyebrow">
-              <span className="tick" /> On camera
-            </p>
-            <h2 className="h2">Walk-throughs from the floor</h2>
-            <p className="note">
-              Short clips from our Instagram &mdash; tap any one to play. Sound is on the original
-              reels.
-            </p>
-          </header>
-          <Reel clips={reels} />
         </section>
 
         {/* ── REVIEWS ──────────────────────────────────────────── */}
@@ -367,6 +350,7 @@ export default async function Home() {
       </main>
 
       <Footer home />
+      <PointerGlow />
 
       {/* Always-reachable WhatsApp. Most enquiries here arrive by WhatsApp, and
           a customer halfway down the gallery shouldn't have to find the form. */}

@@ -19,7 +19,6 @@ export function Header({
         <nav className="nav" aria-label="Sections">
           <a href="#work">The work</a>
           <a href="#services">What we do</a>
-          <a href="#reel">On camera</a>
           {showReviews && <a href="#reviews">Reviews</a>}
           <a href="#about">The name</a>
           <a href="#enquire">Enquire</a>

@@ -1,5 +1,4 @@
 import type { GalleryItem, Service, SiteSettings } from "./types";
-import { ikVideo, ikPoster } from "./imagekit";
 
 /**
  * Canonical seed / fallback content.
@@ -69,34 +68,6 @@ export const SERVICE_NEEDS: { value: string; label: string }[] = [
   { value: "catering", label: "Catering & dining" },
   { value: "dj_lighting", label: "DJ & lighting" },
   { value: "full", label: "Everything — full function" },
-];
-
-/** Reel clips. The live list is the `reels` table, managed at /admin/reels;
- *  this is the fallback when Supabase is unreachable. Files are on ImageKit. */
-export interface ReelClip {
-  src: string;
-  poster: string;
-  caption: string;
-}
-
-const reel = (key: string, caption: string): ReelClip => ({
-  src: ikVideo(`/ssf/reels/${key}.mp4`),
-  poster: ikPoster(`/ssf/reels/${key}.mp4`, `/ssf/reels/${key}_poster.jpg`),
-  caption,
-});
-
-export const REEL: ReelClip[] = [
-  reel("34_CwkNawOSHQH", "Baby shower · Kolar"),
-  reel("39_CoG8qUHDoGx", "Anniversary · Tumkur"),
-  reel("07_C3xdNTuyJpI", "Stage · Bangarpet"),
-  reel("14_C3mx-Tqrmo7", "Sri Nandini Palace"),
-  reel("09_C55DBR8r8HP", "Reception hall"),
-  reel("06_C3xezUTSmHo", "Floral stage"),
-  reel("10_C3_0KY8r_n-", "Mandap detail"),
-  reel("27_CoiV1ZqjdVT", "Entrance decor"),
-  reel("28_CoiZEEcjw-l", "Hall & seating"),
-  reel("03_C35NNM9v4R0", "Setup clip"),
-  reel("08_C7wveRZSl9e", "Evening lighting"),
 ];
 
 export const GALLERY_FILTERS: { key: string; label: string; match: string[] }[] = [
