@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="kn">
+<head>
+<meta charset="utf-8">
+<title>SSF Rajyotsava 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,500;1,9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Instrument+Sans:wght@400;500;600;700&family=Noto+Serif+Kannada:wght@500;700;800;900&family=Noto+Sans+Kannada:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Kannada Rajyotsava, 1 Nov 2026. Five 1080x1350 carousel slides + one
+     1080x1920 story. Each .slide is screenshotted on its own. The thorana,
+     rangoli and temple border are drawn by the script at the bottom. */
+  :root{
+    --haldi:#FFC81E;   /* arishina yellow */
+    --haldi-2:#FFE07A;
+    --kumkum:#D1122A;  /* kumkuma red */
+    --maroon:#6B0A14;
+    --ink:#3A070D;
+    --cream:#FFF5DC;
+    --gold:#E9B44C;
+    --leaf:#2F7D32;
+    --marigold:#FF8A1C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:#222; display:flex; flex-direction:column; align-items:center; gap:40px; padding:40px 0}
+  .slide{position:relative; width:1080px; height:1350px; overflow:hidden; font-family:"Instrument Sans", sans-serif; color:var(--ink)}
+  .slide.story{height:1920px}
+  .kn{font-family:"Noto Serif Kannada", serif}
+  .kn-sans{font-family:"Noto Sans Kannada", sans-serif}
+  .mono{font-family:"IBM Plex Mono", monospace; letter-spacing:.16em; text-transform:uppercase}
+  svg.deco{position:absolute; display:block}
+  .thorana{left:0; top:0; width:1080px; height:200px; z-index:5}
+  .band{left:0; width:1080px; height:64px}
+
+  /* shared footer on the red temple band */
+  .foot{
+    position:absolute; left:0; right:0; bottom:0; height:120px; background:var(--maroon);
+    display:flex; align-items:center; justify-content:space-between; padding:0 56px;
+    color:var(--haldi-2); font:600 24px/1 "IBM Plex Mono", monospace; letter-spacing:.14em; text-transform:uppercase;
+  }
+  .foot .who{display:flex; align-items:center; gap:18px}
+  .badge{width:76px; height:76px; border-radius:50%; overflow:hidden; border:3px solid var(--gold); background:#0c1446; flex:none}
+  .badge{position:relative}
+  .badge img{position:absolute; width:208%; height:208%; left:-54%; top:-33%; max-width:none}
+  .foot .band{bottom:120px}
+
+  /* ---------- 1. cover: the slide is the flag, yellow over red ---------- */
+  .s1{background:linear-gradient(180deg, var(--haldi) 0 735px, var(--kumkum) 735px 100%)}
+  .s1 .chip, .st .chip{
+    position:absolute; left:50%; transform:translateX(-50%); top:206px;
+    background:var(--kumkum); color:var(--haldi-2); padding:14px 30px; border-radius:999px;
+    font:600 26px/1 "IBM Plex Mono", monospace; letter-spacing:.14em; white-space:nowrap;
+  }
+  .s1 .chip .kn-sans, .st .chip .kn-sans{letter-spacing:0; font-weight:600; font-size:28px}
+  .s1 h1, .st h1{
+    position:absolute; left:0; right:0; top:276px; text-align:center;
+    font:900 100px/1.26 "Noto Serif Kannada", serif; color:var(--maroon);
+  }
+  .s1 .rangoli{left:350px; top:545px; width:380px; height:380px}
+  .s1 .en, .st .en{
+    position:absolute; left:0; right:0; top:956px; text-align:center;
+    font:italic 700 84px/1 "Fraunces", serif; color:var(--haldi); letter-spacing:-.01em;
+  }
+  .s1 .sub, .st .sub{position:absolute; left:0; right:0; top:1064px; text-align:center; color:var(--cream)}
+  .s1 .sub .a, .st .sub .a{font:600 26px/1 "IBM Plex Mono", monospace; letter-spacing:.14em; text-transform:uppercase}
+  .s1 .sub .b, .st .sub .b{margin-top:16px; font:600 34px/1.3 "Noto Sans Kannada", sans-serif}
+
+  /* ---------- 2. timeline ---------- */
+  .s2{background:var(--cream)}
+  .s2 .head, .s3 .head{position:absolute; left:80px; right:80px; top:120px}
+  .h-kn{font:900 74px/1.3 "Noto Serif Kannada", serif; color:var(--kumkum)}
+  .h-en{margin-top:6px; font:italic 600 44px/1.1 "Fraunces", serif; color:var(--maroon)}
+  .tl{position:absolute; left:80px; right:80px; top:368px}
+  .tl::before{content:""; position:absolute; left:123px; top:18px; bottom:24px; width:4px; background:repeating-linear-gradient(180deg, var(--kumkum) 0 14px, transparent 14px 24px)}
+  .row{position:relative; display:grid; grid-template-columns:236px 1fr; padding-bottom:30px}
+  .row .yr{font:800 66px/1 "Fraunces", serif; color:var(--maroon); letter-spacing:-.02em; background:var(--cream); width:236px; padding-top:4px}
+  .row .yr::after{content:""; position:absolute; left:108px; top:80px; width:24px; height:24px; border-radius:50%; background:var(--haldi); border:5px solid var(--kumkum)}
+  .row .t-kn{font:600 31px/1.45 "Noto Sans Kannada", sans-serif; color:var(--ink)}
+  .row .t-en{margin-top:6px; font:400 25px/1.35 "Instrument Sans", sans-serif; color:#6d4a3f}
+
+  /* ---------- 3. heritage grid ---------- */
+  .s3{background:var(--kumkum)}
+  .s3 .h-kn{color:var(--haldi); font-size:60px}
+  .s3 .h-en{color:var(--cream)}
+  .grid{position:absolute; left:64px; right:64px; top:350px; display:grid; grid-template-columns:1fr 1fr; gap:22px}
+  .tile{background:var(--cream); border-radius:26px; padding:26px 30px 28px; border-top:12px solid var(--haldi); min-height:236px}
+  .tile .era{font:600 21px/1 "IBM Plex Mono", monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--kumkum)}
+  .tile .ti{margin-top:12px; font:800 40px/1.3 "Noto Serif Kannada", serif; color:var(--maroon)}
+  .tile .tx{margin-top:6px; font:400 24px/1.35 "Instrument Sans", sans-serif; color:#5b3a31}
+
+  /* ---------- 4. colours + our mandap ---------- */
+  .s4{background:var(--haldi)}
+  .s4 .panel{position:absolute; left:0; top:0; width:1080px; height:640px; background:radial-gradient(circle at 50% 62%, #E8253A 0, var(--kumkum) 45%, #A50C1F 100%)}
+  .s4 .akshara{left:0; top:0; width:1080px; height:640px}
+  .s4 .body{position:absolute; left:80px; right:80px; top:690px}
+  .s4 .flag{display:flex; height:22px; width:190px; border-radius:4px; overflow:hidden; flex-direction:column; margin-bottom:24px}
+  .s4 .flag i{flex:1; display:block}
+  .s4 .h-kn{color:var(--maroon); font-size:80px}
+  .s4 .h-en{color:var(--kumkum)}
+  .s4 p.kn-sans{margin-top:22px; font:500 30px/1.5 "Noto Sans Kannada", sans-serif; color:var(--ink)}
+  .s4 p.en{margin-top:10px; font:400 25px/1.4 "Instrument Sans", sans-serif; color:#5b3a10}
+  .s4 .note{margin-top:14px; font:500 18px/1 "IBM Plex Mono", monospace; letter-spacing:.1em; text-transform:uppercase; color:#8a5a12}
+
+  /* ---------- 5. close ---------- */
+  .s5{background:radial-gradient(circle at 50% 40%, #E41E33 0, var(--kumkum) 40%, #A50C1F 100%)}
+  .s5 .rangoli{left:190px; top:120px; width:700px; height:700px; opacity:.12}
+  .s5 .q{position:absolute; left:0; right:0; top:300px; text-align:center; font:900 96px/1.45 "Noto Serif Kannada", serif; color:var(--haldi)}
+  .s5 .qe{position:absolute; left:0; right:0; top:610px; text-align:center; font:italic 500 40px/1.2 "Fraunces", serif; color:var(--cream)}
+  .s5 .wish{position:absolute; left:100px; right:100px; top:760px; text-align:center}
+  .s5 .wish .badge{width:150px; height:150px; margin:0 auto 26px; border-width:4px}
+  .s5 .wish .w-kn{font:600 34px/1.45 "Noto Sans Kannada", sans-serif; color:var(--cream)}
+  .s5 .wish .w-en{margin-top:8px; font:500 26px/1.35 "Instrument Sans", sans-serif; color:var(--haldi-2)}
+
+  /* ---------- story 1080x1920 (IG covers ~220px top, ~250px bottom) ---------- */
+  .st{background:linear-gradient(180deg, var(--haldi) 0 920px, var(--kumkum) 920px 100%)}
+  .st .chip{top:290px}
+  .st h1{top:380px; font-size:104px}
+  .st .rangoli{left:320px; top:700px; width:440px; height:440px}
+  .st .en{top:1180px; font-size:82px}
+  .st .sub{top:1290px}
+  .st .foot{height:400px; padding-bottom:260px}
+  .st .foot .band{bottom:400px}
+</style>
+</head>
+<body>
+
+<!-- 1 · cover -->
+<section class="slide s1" id="s1">
+  <svg class="deco thorana"></svg>
+  <p class="chip"><span class="kn-sans">ನವೆಂಬರ್ 1</span> · NOVEMBER 1</p>
+  <h1>ಕನ್ನಡ ರಾಜ್ಯೋತ್ಸವದ<br>ಹಾರ್ದಿಕ ಶುಭಾಶಯಗಳು</h1>
+  <svg class="deco rangoli" viewBox="-210 -210 420 420"></svg>
+  <p class="en">Happy Kannada Rajyotsava</p>
+  <div class="sub">
+    <p class="a">70 years of a united Karnataka · 1956–2026</p>
+    <p class="b">ಕರ್ನಾಟಕ ಏಕೀಕರಣಕ್ಕೆ 70 ವರ್ಷ</p>
+  </div>
+  <div class="foot">
+    <svg class="deco band"></svg>
+    <span class="who"><span class="badge"><img src="img/logo-badge.png" alt=""></span>SSF Events · Kolar</span>
+    <span>Swipe →</span>
+  </div>
+</section>
+
+<!-- 2 · how Karnataka became one -->
+<section class="slide s2" id="s2">
+  <svg class="deco band" style="top:0"></svg>
+  <div class="head">
+    <p class="h-kn">ಕರ್ನಾಟಕ ಒಂದಾದ ಕಥೆ</p>
+    <p class="h-en">How Karnataka became one</p>
+  </div>
+  <div class="tl">
+    <div class="row"><p class="yr">1905</p><div>
+      <p class="t-kn">ಆಲೂರು ವೆಂಕಟರಾಯರು ಕರ್ನಾಟಕ ಏಕೀಕರಣ ಚಳವಳಿಗೆ ನಾಂದಿ ಹಾಡಿದರು.</p>
+      <p class="t-en">Aluru Venkata Rao starts the Karnataka Ekikarana (unification) movement.</p></div></div>
+    <div class="row"><p class="yr">1956</p><div>
+      <p class="t-kn">ನವೆಂಬರ್ 1: ಬಾಂಬೆ, ಮದ್ರಾಸ್, ಹೈದರಾಬಾದ್ ರಾಜ್ಯಗಳ ಹಾಗೂ ಕೊಡಗಿನ ಕನ್ನಡ ಪ್ರದೇಶಗಳು ಮೈಸೂರು ರಾಜ್ಯದಲ್ಲಿ ಒಂದಾದವು.</p>
+      <p class="t-en">Nov 1: Kannada-speaking areas of Bombay, Madras and Hyderabad states and Coorg join Mysore State.</p></div></div>
+    <div class="row"><p class="yr">1973</p><div>
+      <p class="t-kn">ನವೆಂಬರ್ 1: ಮುಖ್ಯಮಂತ್ರಿ ಡಿ. ದೇವರಾಜ ಅರಸು ಅವರ ಕಾಲದಲ್ಲಿ ಮೈಸೂರು ರಾಜ್ಯಕ್ಕೆ ‘ಕರ್ನಾಟಕ’ ಎಂದು ಹೆಸರಿಡಲಾಯಿತು.</p>
+      <p class="t-en">Nov 1: Mysore State is renamed Karnataka, under Chief Minister D. Devaraj Urs.</p></div></div>
+    <div class="row"><p class="yr">2008</p><div>
+      <p class="t-kn">ಕನ್ನಡಕ್ಕೆ ಶಾಸ್ತ್ರೀಯ ಭಾಷೆಯ ಸ್ಥಾನಮಾನ ದೊರೆಯಿತು.</p>
+      <p class="t-en">Kannada is declared a Classical Language of India.</p></div></div>
+  </div>
+  <div class="foot">
+    <svg class="deco band"></svg>
+    <span class="who"><span class="badge"><img src="img/logo-badge.png" alt=""></span>@ssf_events</span>
+    <span>2 / 5</span>
+  </div>
+</section>
+
+<!-- 3 · heritage -->
+<section class="slide s3" id="s3">
+  <svg class="deco band" style="top:0"></svg>
+  <div class="head">
+    <p class="h-kn">ಶಿಲೆ, ಸಾಹಿತ್ಯ, ಸಾಮ್ರಾಜ್ಯಗಳ ನಾಡು</p>
+    <p class="h-en">A land of stone, poets &amp; empires</p>
+  </div>
+  <div class="grid">
+    <div class="tile"><p class="era">c. 450 CE</p><p class="ti">ಹಲ್ಮಿಡಿ ಶಾಸನ</p><p class="tx">Halmidi inscription, the oldest known Kannada inscription.</p></div>
+    <div class="tile"><p class="era">4th century</p><p class="ti">ಬನವಾಸಿಯ ಕದಂಬರು</p><p class="tx">Kadambas of Banavasi, the first native Kannada dynasty.</p></div>
+    <div class="tile"><p class="era">12th century</p><p class="ti">ಬೇಲೂರು · ಹಳೇಬೀಡು</p><p class="tx">Hoysala temples, stone carved fine as lace.</p></div>
+    <div class="tile"><p class="era">1336 – 1565</p><p class="ti">ಹಂಪಿ</p><p class="tx">Capital of the Vijayanagara Empire.</p></div>
+    <div class="tile"><p class="era">Since 1610</p><p class="ti">ಮೈಸೂರು ದಸರಾ</p><p class="tx">Our Nada Habba, begun by Raja Wodeyar I.</p></div>
+    <div class="tile"><p class="era">8 awards</p><p class="ti">ಜ್ಞಾನಪೀಠ</p><p class="tx">From Kuvempu to Kambar, eight Jnanpith awards for Kannada.</p></div>
+  </div>
+  <div class="foot">
+    <svg class="deco band"></svg>
+    <span class="who"><span class="badge"><img src="img/logo-badge.png" alt=""></span>@ssf_events</span>
+    <span>3 / 5</span>
+  </div>
+</section>
+
+<!-- 4 · arishina-kumkuma + our mandap -->
+<section class="slide s4" id="s4">
+  <div class="panel"></div>
+  <svg class="deco akshara" viewBox="0 0 1080 640"></svg>
+  <svg class="deco thorana"></svg>
+  <div class="body">
+    <div class="flag"><i style="background:var(--haldi-2); outline:2px solid var(--maroon)"></i><i style="background:var(--kumkum)"></i></div>
+    <p class="h-kn">ಅರಿಶಿನ · ಕುಂಕುಮ</p>
+    <p class="h-en">The colours of every good beginning</p>
+    <p class="kn-sans">ಮಲ್ಲಿಗೆ ಹಾರ, ಮಾವಿನ ತೋರಣ, ಬಾಗಿಲಲ್ಲಿ ರಂಗೋಲಿ: 1999ರಿಂದ 5,000ಕ್ಕೂ ಹೆಚ್ಚು ಮದುವೆಗಳಲ್ಲಿ ಈ ಪರಂಪರೆಯನ್ನು ಉಳಿಸಿಕೊಂಡು ಬಂದಿದ್ದೇವೆ.</p>
+    <p class="en">Yellow for turmeric, red for kumkum: the Kannada flag. Mallige garlands, mango-leaf thorana and rangoli at the door are traditions we have carried into 5,000+ weddings since 1999.</p>
+    <p class="note">Kannada flag designed by Ma. Ramamurthy, 1960s</p>
+  </div>
+  <div class="foot">
+    <svg class="deco band"></svg>
+    <span class="who"><span class="badge"><img src="img/logo-badge.png" alt=""></span>@ssf_events</span>
+    <span>4 / 5</span>
+  </div>
+</section>
+
+<!-- 5 · close -->
+<section class="slide s5" id="s5">
+  <svg class="deco band" style="top:0"></svg>
+  <svg class="deco rangoli" viewBox="-210 -210 420 420"></svg>
+  <p class="q">ಸಿರಿಗನ್ನಡಂ ಗೆಲ್ಗೆ<br>ಸಿರಿಗನ್ನಡಂ ಬಾಳ್ಗೆ</p>
+  <p class="qe">Victory to glorious Kannada. Long may it live.</p>
+  <div class="wish">
+    <div class="badge"><img src="img/logo-badge.png" alt=""></div>
+    <p class="w-kn">ಎಸ್‌ಎಸ್‌ಎಫ್ ಈವೆಂಟ್ಸ್ ಕುಟುಂಬದಿಂದ ಕನ್ನಡ ರಾಜ್ಯೋತ್ಸವದ ಶುಭಾಶಯಗಳು</p>
+    <p class="w-en">Wedding &amp; event decor · Kolar · Since 1999</p>
+  </div>
+  <div class="foot">
+    <svg class="deco band"></svg>
+    <span>WhatsApp +91 93535 68207</span>
+    <span>@ssf_events</span>
+  </div>
+</section>
+
+<!-- story -->
+<section class="slide story st" id="story">
+  <svg class="deco thorana"></svg>
+  <p class="chip"><span class="kn-sans">ನವೆಂಬರ್ 1</span> · NOVEMBER 1</p>
+  <h1>ಕನ್ನಡ ರಾಜ್ಯೋತ್ಸವದ<br>ಹಾರ್ದಿಕ ಶುಭಾಶಯಗಳು</h1>
+  <svg class="deco rangoli" viewBox="-210 -210 420 420"></svg>
+  <p class="en">Happy Kannada Rajyotsava</p>
+  <div class="sub">
+    <p class="a">70 years of a united Karnataka · 1956–2026</p>
+    <p class="b">ಕರ್ನಾಟಕ ಏಕೀಕರಣಕ್ಕೆ 70 ವರ್ಷ</p>
+  </div>
+  <div class="foot">
+    <svg class="deco band"></svg>
+    <span class="who"><span class="badge"><img src="img/logo-badge.png" alt=""></span>SSF Events · Kolar</span>
+    <span>@ssf_events</span>
+  </div>
+</section>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs, parent) => {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  parent && parent.appendChild(n);
+  return n;
+};
+
+// Mango-leaf thorana with a marigold rope and hanging marigold strands
+function thorana(svg){
+  svg.setAttribute("viewBox", "0 0 1080 200");
+  const defs = el("defs", {}, svg);
+  const lg = el("linearGradient", {id:"leafg", x1:0, y1:0, x2:0, y2:1}, defs);
+  el("stop", {offset:0, "stop-color":"#1F5E22"}, lg);
+  el("stop", {offset:1, "stop-color":"#4FA43A"}, lg);
+  const ball = (x, y, r, c) => {
+    el("circle", {cx:x, cy:y, r, fill:c}, svg);
+    el("circle", {cx:x - r*.3, cy:y - r*.3, r:r*.35, fill:"#fff", opacity:.25}, svg);
+  };
+  for (let i = 0, x = 30; x < 1080; i++, x += 60){
+    const L = i % 2 ? 118 : 148, w = 26;
+    const g = el("g", {transform:`translate(${x} 30)`}, svg);
+    el("path", {d:`M0 0 C ${w} ${L*.25} ${w*.8} ${L*.7} 0 ${L} C ${-w*.8} ${L*.7} ${-w} ${L*.25} 0 0Z`, fill:"url(#leafg)", stroke:"#174a1a", "stroke-width":1.5}, g);
+    el("path", {d:`M0 4 L0 ${L-8}`, stroke:"#A7D98A", "stroke-width":2, opacity:.8}, g);
+  }
+  for (let x = 60; x < 1080; x += 120)
+    for (let k = 0; k < 4; k++) ball(x, 52 + k*24, 11 - k, k % 2 ? "#FFB300" : "#FF7A00");
+  for (let x = 0; x <= 1080; x += 24) ball(x, 24, 14, (x/24) % 2 ? "#FFB300" : "#FF7A00");
+}
+
+// Rangoli: petal rings in red, yellow, green and white
+function rangoli(svg){
+  const ring = (n, r, rx, ry, fill, stroke, rot = 0) => {
+    for (let i = 0; i < n; i++){
+      const a = rot + 360*i/n;
+      el("ellipse", {cx:0, cy:-r, rx, ry, fill, stroke, "stroke-width":3, transform:`rotate(${a})`}, svg);
+    }
+  };
+  const dots = (n, r, rad, fill) => {
+    for (let i = 0; i < n; i++){
+      const a = 2*Math.PI*i/n;
+      el("circle", {cx:r*Math.cos(a), cy:r*Math.sin(a), r:rad, fill}, svg);
+    }
+  };
+  el("circle", {r:200, fill:"#FFF5DC"}, svg);
+  el("circle", {r:200, fill:"none", stroke:"#6B0A14", "stroke-width":6}, svg);
+  dots(48, 186, 5, "#D1122A");
+  ring(16, 128, 26, 50, "#D1122A", "#FFF5DC");
+  ring(16, 128, 12, 30, "#FFC81E", "none");
+  ring(12, 80, 22, 40, "#FF8A1C", "#FFF5DC", 15);
+  ring(8, 44, 16, 30, "#2F7D32", "#FFF5DC");
+  el("circle", {r:24, fill:"#FFC81E", stroke:"#D1122A", "stroke-width":5}, svg);
+  el("circle", {r:8, fill:"#D1122A"}, svg);
+  dots(24, 160, 4, "#2F7D32");
+}
+
+// Silk-saree temple border: gold spires on maroon
+function band(svg){
+  svg.setAttribute("viewBox", "0 0 1080 64");
+  svg.setAttribute("preserveAspectRatio", "none");
+  el("rect", {width:1080, height:64, fill:"#6B0A14"}, svg);
+  el("rect", {y:4, width:1080, height:4, fill:"#E9B44C"}, svg);
+  el("rect", {y:56, width:1080, height:4, fill:"#E9B44C"}, svg);
+  for (let x = 0; x < 1080; x += 40){
+    el("path", {d:`M${x} 52 L${x+20} 16 L${x+40} 52Z`, fill:"#E9B44C"}, svg);
+    el("path", {d:`M${x+9} 52 L${x+20} 32 L${x+31} 52Z`, fill:"#D1122A"}, svg);
+    el("circle", {cx:x+20, cy:13, r:3, fill:"#FFE07A"}, svg);
+  }
+}
+
+// Big "ಕ" in a petal-ringed medallion, with jasmine strands either side
+function akshara(svg){
+  const g = el("g", {transform:"translate(540 382)"}, svg);
+  for (let i = 0; i < 24; i++)
+    el("ellipse", {cx:0, cy:-176, rx:22, ry:44, fill:i % 2 ? "#FF8A1C" : "#FFC81E", stroke:"#6B0A14", "stroke-width":3, transform:`rotate(${15*i})`}, g);
+  el("circle", {r:150, fill:"#FFC81E", stroke:"#6B0A14", "stroke-width":8}, g);
+  for (let i = 0; i < 36; i++){
+    const a = 2*Math.PI*i/36;
+    el("circle", {cx:132*Math.cos(a), cy:132*Math.sin(a), r:4.5, fill:"#D1122A"}, g);
+  }
+  const t = el("text", {x:0, y:62, "text-anchor":"middle", fill:"#D1122A", "font-family":"Noto Serif Kannada", "font-weight":900, "font-size":200}, g);
+  t.textContent = "ಕ";
+  for (const x of [70, 150, 930, 1010]){
+    const len = (x === 150 || x === 930) ? 15 : 19;
+    for (let k = 0; k < len; k++){
+      const y = 196 + k*22;
+      if (k % 4 === 3) el("ellipse", {cx:x + (k % 8 === 3 ? 9 : -9), cy:y, rx:6, ry:11, fill:"#2F7D32", transform:`rotate(${k % 8 === 3 ? 30 : -30} ${x} ${y})`}, svg);
+      el("circle", {cx:x, cy:y, r:9, fill:"#FFF8EA", stroke:"#E7D9B8", "stroke-width":1.5}, svg);
+    }
+  }
+}
+
+document.querySelectorAll("svg.akshara").forEach(akshara);
+document.querySelectorAll("svg.thorana").forEach(thorana);
+document.querySelectorAll("svg.rangoli").forEach(rangoli);
+document.querySelectorAll("svg.band").forEach(band);
+</script>
+</body>
+</html>
