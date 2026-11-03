@@ -405,20 +405,161 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 .cact.is-wa{background:#25D366; border-color:#25D366; color:#0B2E17}
 .cact.is-wa:hover{background:#1FBA59; border-color:#1FBA59; color:#0B2E17}
 
-/* ---------- floating WhatsApp button ---------- */
-.wa-fab{
-  position:fixed; right:clamp(14px,3vw,26px); bottom:clamp(14px,3vw,26px); z-index:60;
-  width:54px; height:54px; border-radius:50%;
-  display:grid; place-items:center; text-decoration:none;
-  background:#25D366; color:#0B2E17;
-  box-shadow:0 6px 22px -6px rgba(0,0,0,.4), 0 2px 6px rgba(0,0,0,.16);
-  transition:transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease;
+/* ---------- Ira, the lotus guide and chat (carries the WhatsApp link) ---------- */
+.ira{
+  position:fixed; z-index:61;
+  right:clamp(14px,3vw,26px);
+  bottom:clamp(14px,3vw,26px);
+  display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+  pointer-events:none;
 }
-.wa-fab svg{width:28px; height:28px}
-.wa-fab:hover{transform:translateY(-2px) scale(1.04); box-shadow:0 10px 28px -6px rgba(0,0,0,.46)}
-.wa-fab:active{transform:scale(.97)}
-@media print{ .wa-fab{display:none} }
-@media (prefers-reduced-motion:reduce){ .wa-fab{transition:none} }
+.ira > *{pointer-events:auto}
+.ira-btn{
+  width:64px; height:64px; padding:0; border-radius:50%; overflow:hidden; cursor:pointer;
+  border:2px solid var(--gold); background:var(--card);
+  box-shadow:0 6px 22px -6px rgba(0,0,0,.4), 0 2px 6px rgba(0,0,0,.16);
+  /* --ira-lean / --ira-step are written by IraGuide while the page scrolls;
+     the overshoot curve is the bounce back upright when scrolling stops. */
+  rotate:var(--ira-lean, 0deg);
+  transform:translateY(var(--ira-step, 0px));
+  animation:ira-bob 3.6s ease-in-out infinite;
+  transition:rotate .7s cubic-bezier(.34,1.9,.5,1), transform .7s cubic-bezier(.34,1.9,.5,1), scale .2s ease;
+}
+.ira-btn.is-moving{transition:rotate .1s linear, transform .1s linear; animation-play-state:paused}
+.ira-btn img{width:100%; height:100%; object-fit:cover; animation:ira-pop .28s cubic-bezier(.34,1.56,.64,1)}
+.ira-btn:hover{scale:1.06}
+.ira-btn[aria-expanded="true"]{animation:none}
+@keyframes ira-bob{0%,100%{translate:0 0} 50%{translate:0 -4px}}
+@keyframes ira-pop{from{scale:.86}}
+/* First-ever visit: pop up from the corner like a bud opening. */
+.ira.is-intro .ira-btn{animation:ira-arrive .95s cubic-bezier(.34,1.56,.64,1), ira-bob 3.6s ease-in-out .95s infinite}
+@keyframes ira-arrive{
+  from{opacity:0; scale:.2; rotate:-30deg; translate:0 30px}
+  60%{opacity:1; scale:1.12}
+  to{scale:1; rotate:0deg; translate:0 0}
+}
+.ira-zz{
+  position:absolute; right:-2px; bottom:70px; pointer-events:none;
+  font:600 .95rem/1 "IBM Plex Mono", monospace; color:var(--gold);
+  animation:ira-zz 2.4s ease-in-out infinite;
+}
+.ira-zz span{font-size:.7em; margin-left:2px; vertical-align:super}
+@keyframes ira-zz{0%{opacity:0; translate:0 6px} 30%,70%{opacity:1} 100%{opacity:0; translate:6px -10px}}
+.ira-lang{display:flex; gap:4px; justify-content:flex-end; margin:-4px -4px 8px 0}
+.ira-lang button{
+  cursor:pointer; padding:4px 9px; border-radius:999px; border:1px solid var(--line);
+  font:500 .72rem/1.2 "IBM Plex Mono", monospace; color:var(--ink-soft);
+}
+.ira-lang button[lang="kn"]{font-family:"Noto Sans Kannada","Nirmala UI","Kannada Sangam MN",sans-serif; font-size:.8rem}
+.ira-lang button[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.ira-tip:lang(kn), .irac:lang(kn){font-family:"Noto Sans Kannada","Nirmala UI","Kannada Sangam MN","Instrument Sans",sans-serif}
+.irac:lang(kn) .irac-name{font:600 1.05rem/1.2 "Noto Sans Kannada","Nirmala UI","Kannada Sangam MN",sans-serif}
+/* Flower shower when an enquiry is sent. */
+.ira-petals{position:fixed; inset:0; z-index:62; pointer-events:none; overflow:hidden}
+.ira-petals i{
+  position:absolute; top:-30px; left:var(--x); width:14px; height:20px;
+  border-radius:80% 0 80% 0; background:linear-gradient(135deg,#FBF4E8,#EAC58B);
+  box-shadow:0 1px 2px rgba(0,0,0,.15);
+  animation:ira-fall var(--s) cubic-bezier(.3,.1,.6,1) var(--d) both;
+}
+.ira-petals i:nth-child(3n){background:linear-gradient(135deg,#F7E3E0,#D98A83)}
+@keyframes ira-fall{
+  from{transform:translate(0,0) rotate(0deg); opacity:1}
+  50%{transform:translate(24px,50vh) rotate(calc(var(--r) / 2))}
+  to{transform:translate(-12px,105vh) rotate(var(--r)); opacity:.9}
+}
+
+.ira-tip{
+  position:relative; max-width:min(260px, calc(100vw - 100px)); cursor:pointer;
+  background:var(--card); color:var(--ink); border:1px solid var(--line);
+  border-radius:14px 14px 4px 14px; padding:11px 14px;
+  font-size:.88rem; line-height:1.45; box-shadow:var(--shadow);
+  animation:ira-in .35s cubic-bezier(.22,1,.36,1);
+}
+@keyframes ira-in{from{opacity:0; transform:translateY(8px) scale(.97)} to{opacity:1; transform:none}}
+/* WhatsApp badge on Ira's corner (replaces the separate green button). */
+.ira-dock{position:relative}
+.ira-wa{
+  position:absolute; left:-8px; bottom:-4px; z-index:1;
+  width:30px; height:30px; border-radius:50%; display:grid; place-items:center; text-decoration:none;
+  background:#25D366; color:#0B2E17; border:2px solid var(--card);
+  box-shadow:0 2px 8px rgba(0,0,0,.28); transition:scale .15s ease;
+}
+.ira-wa svg{width:16px; height:16px}
+.ira-wa:hover{scale:1.1}
+
+/* Ira's guided chat. */
+.irac{
+  width:min(370px, calc(100vw - 28px)); height:min(560px, calc(100dvh - 110px));
+  display:flex; flex-direction:column; overflow:hidden;
+  background:var(--card); color:var(--ink); border:1px solid var(--line);
+  border-radius:18px; box-shadow:var(--shadow);
+  animation:ira-in .3s cubic-bezier(.22,1,.36,1);
+}
+.irac[hidden]{display:none}
+.irac-head{display:flex; align-items:center; gap:8px; padding:10px 10px 10px 12px; background:var(--wash); border-bottom:1px solid var(--line)}
+.irac-head img{width:40px; height:40px; border-radius:50%; border:1.5px solid var(--gold); background:var(--card); flex:none}
+.irac-who{flex:1; min-width:0}
+.irac-name{font:400 1.15rem/1.1 "Libre Caslon Display", Georgia, serif}
+.irac-sub{font:500 .62rem/1.4 "IBM Plex Mono", monospace; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft)}
+.irac .ira-lang{margin:0}
+.irac-icon{width:32px; height:32px; flex:none; border-radius:50%; display:grid; place-items:center; cursor:pointer; text-decoration:none; color:var(--ink-soft)}
+.irac-icon:hover{background:var(--card); color:var(--ink)}
+.irac-icon svg{width:18px; height:18px}
+.irac-icon.is-wa{color:#1FA855}
+.irac-list{flex:1; overflow-y:auto; overscroll-behavior:contain; padding:14px 12px; display:flex; flex-direction:column; gap:8px}
+.irac-msg{
+  align-self:flex-start; max-width:86%; padding:9px 13px; margin:0;
+  background:var(--paper); border:1px solid var(--line); border-radius:16px 16px 16px 4px;
+  font-size:.92rem; line-height:1.45; animation:ira-in .25s ease;
+}
+.irac-msg.is-me{align-self:flex-end; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); border-radius:16px 16px 4px 16px}
+.irac-summary{display:grid; grid-template-columns:auto 1fr; gap:3px 12px}
+.irac-summary dt{font:500 .66rem/1.9 "IBM Plex Mono", monospace; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft)}
+.irac-summary dd{margin:0; font-weight:500}
+.irac-wa{display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-weight:600; background:#25D366; color:#0B2E17; border-color:#25D366}
+.irac-wa svg{width:18px; height:18px}
+.irac-typing{display:flex; gap:4px; padding:13px 14px}
+.irac-typing span{width:6px; height:6px; border-radius:50%; background:var(--ink-soft); animation:irac-dot 1s ease-in-out infinite}
+.irac-typing span:nth-child(2){animation-delay:.15s}
+.irac-typing span:nth-child(3){animation-delay:.3s}
+@keyframes irac-dot{0%,60%,100%{opacity:.3; translate:0 0} 30%{opacity:1; translate:0 -3px}}
+.irac-foot{display:grid; gap:8px; max-height:48%; overflow-y:auto; padding:10px 12px 8px; border-top:1px solid var(--line)}
+.irac-chips{display:flex; flex-wrap:wrap; gap:6px}
+.irac-chip{
+  cursor:pointer; padding:7px 12px; border-radius:999px; border:1px solid var(--line);
+  background:var(--card); color:var(--ink); text-decoration:none; font-size:.86rem; line-height:1.3;
+  transition:background .15s ease, border-color .15s ease;
+}
+.irac-chip:hover{background:var(--wash); border-color:var(--gold)}
+.irac-chip.is-main{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.irac-chip.is-wa{border-color:#25D366}
+.irac-chip[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.irac-form{display:flex; flex-wrap:wrap; gap:8px}
+.irac-form input{
+  flex:1; min-width:0; padding:9px 12px; border-radius:12px; border:1px solid var(--line);
+  background:var(--paper); color:var(--ink); font:inherit; font-size:16px; /* 16px stops iOS zooming in */
+}
+.irac-form input:focus{outline:2px solid var(--gold); outline-offset:1px}
+.irac-form .irac-chips{flex-basis:100%}
+.irac-send{cursor:pointer; padding:9px 16px; border-radius:12px; background:var(--accent); color:var(--accent-ink); font-weight:600; font-size:.9rem}
+.irac-send:disabled{opacity:.45; cursor:default}
+.irac-send.is-wide{width:100%}
+.irac-confirm{display:grid; gap:10px}
+.irac-consent{display:flex; gap:8px; align-items:flex-start; font-size:.8rem; line-height:1.4; color:var(--ink-soft)}
+.irac-consent input{flex:none; width:16px; height:16px; margin-top:2px; accent-color:var(--accent)}
+.irac-error{font-size:.82rem; color:var(--accent)}
+.irac-small{display:flex; justify-content:space-between; gap:8px}
+.irac-small button{
+  cursor:pointer; color:var(--ink-soft); text-decoration:underline; text-underline-offset:3px;
+  font:500 .68rem/1.4 "IBM Plex Mono", monospace; letter-spacing:.03em;
+}
+.irac-small button:only-child{margin-left:auto}
+@media print{ .ira, .ira-petals{display:none} }
+@media (prefers-reduced-motion:reduce){
+  .ira-btn, .ira-btn img, .ira-tip, .ira-zz, .irac, .irac-msg, .irac-typing span{animation:none; transition:none}
+  .ira-petals{display:none}
+}
 
 /* ---------- toast ---------- */
 .toast{

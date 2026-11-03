@@ -7,6 +7,7 @@ import { EnquiryForm } from "@/components/EnquiryForm";
 import { Reviews } from "@/components/Reviews";
 import { Footer } from "@/components/Footer";
 import { PointerGlow } from "@/components/PointerGlow";
+import { IraGuide } from "@/components/IraGuide";
 import {
   PhoneIcon,
   ChatIcon,
@@ -352,18 +353,14 @@ export default async function Home() {
       <Footer home />
       <PointerGlow />
 
-      {/* Always-reachable WhatsApp. Most enquiries here arrive by WhatsApp, and
-          a customer halfway down the gallery shouldn't have to find the form. */}
-      <a
-        className="wa-fab"
-        href={waHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Message ${SITE.name} on WhatsApp`}
-        title="Message us on WhatsApp"
-      >
-        <WhatsAppIcon />
-      </a>
+      {/* Ira, the lotus mascot: section guide and guided chat. She also carries
+          the always-reachable WhatsApp link (most enquiries arrive by WhatsApp,
+          and a customer halfway down the gallery shouldn't have to find the form). */}
+      <IraGuide
+        showReviews={reviews.length > 0 || Boolean(settings.google_reviews_url)}
+        whatsapp={contact.whatsapp}
+        waHref={waHref}
+      />
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { ChatIcon } from "./icons";
+import { ENQUIRY_SENT_EVENT } from "@/lib/ira";
 import { SITE } from "@/lib/site";
 import { SERVICE_NEEDS } from "@/lib/content";
 import { PRIVACY_VERSION } from "@/lib/legal";
@@ -111,6 +112,8 @@ export function EnquiryForm({ whatsapp = SITE.whatsapp }: { whatsapp?: string })
     }
 
     setStatus(saved ? "ok" : "error");
+    // Lets Ira celebrate the sent enquiry.
+    if (saved) window.dispatchEvent(new Event(ENQUIRY_SENT_EVENT));
     showToast(
       saved
         ? "Got it — we'll call you back. Opening WhatsApp so you can add photos."
