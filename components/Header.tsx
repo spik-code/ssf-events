@@ -1,4 +1,5 @@
 import { Mark } from "./Mark";
+import { Nav } from "./Nav";
 import { ThemeSelect } from "./ThemeSelect";
 import { PhoneIcon } from "./icons";
 import { SITE } from "@/lib/site";
@@ -16,14 +17,17 @@ export function Header({
     <header className="bar">
       <div className="wrap bar-in">
         <Mark label={`${SITE.name}, home`} />
-        <nav className="nav" aria-label="Sections">
-          <a href="#work">The work</a>
-          <a href="#services">What we do</a>
-          {showReviews && <a href="#reviews">Reviews</a>}
-          <a href="#about">The name</a>
-          <a href="#enquire">Enquire</a>
-        </nav>
-        <ThemeSelect />
+        <Nav
+          links={[
+            ["#work", "The work"],
+            ["#services", "What we do"],
+            ...(showReviews ? ([["#reviews", "Reviews"]] as [string, string][]) : []),
+            ["#about", "The name"],
+            ["#enquire", "Enquire"],
+          ]}
+        >
+          <ThemeSelect />
+        </Nav>
         <a className="btn btn-primary" href={telHref}>
           <PhoneIcon />
           <span className="lbl">{phone.replace(/^\+91\s*/, "")}</span>

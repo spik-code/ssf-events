@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withViewTransition } from "@/lib/viewTransition";
 
 const KEY = "ssf-theme";
 const THEMES = ["cotton", "candlelight"] as const;
@@ -17,8 +18,11 @@ export function ThemeSelect() {
 
   function apply(next: string) {
     const t: Theme = next === "candlelight" ? "candlelight" : "cotton";
-    setTheme(t);
-    document.documentElement.setAttribute("data-theme", t);
+    // The new palette wipes across the page from the bar.
+    withViewTransition(() => {
+      setTheme(t);
+      document.documentElement.setAttribute("data-theme", t);
+    }, "theme-wipe");
     try {
       localStorage.setItem(KEY, t);
     } catch {
