@@ -26,6 +26,8 @@ import {
 } from "@/lib/queries";
 import { SITE, SITE_URL } from "@/lib/site";
 import { resolveContact } from "@/lib/contact";
+import { CountUp } from "@/components/CountUp";
+import type { GalleryItem } from "@/lib/types";
 
 export const revalidate = 300;
 
@@ -41,7 +43,20 @@ const TAGS = [
   "Catering",
 ];
 
-const PLACES = "Kolar  ·  Bengaluru  ·  Bangarpet  ·  Avani  ·  Tumkur  ·  across Karnataka";
+// Services carry no photo of their own, so each borrows the first unused
+// gallery photo that fits its name; one that fits nothing stays text-only.
+// shortcut: keyword match on the service name — add an image column to
+// `services` when the admin needs to choose the photo.
+const SERVICE_PHOTO: [RegExp, (g: GalleryItem) => boolean][] = [
+  [/mandap|pooja|tradition/i, (g) => g.category === "mandap"],
+  [/reception|entrance/i, (g) => g.category === "reception"],
+  [/haldi/i, (g) => g.category === "haldi"],
+  [/baby|birthday|naming/i, (g) => g.category === "celebration"],
+  [/light|dj|theme/i, (g) => /led|light/i.test(g.caption ?? "")],
+  [/wedding|stage/i, (g) => g.category === "wedding"],
+];
+
+const PLACES ="Kolar  ·  Bengaluru  ·  Bangarpet  ·  Avani  ·  Tumkur  ·  across Karnataka";
 
 export default async function Home() {
   const [gallery, services, settings, reviews] = await Promise.all([
@@ -100,6 +115,28 @@ export default async function Home() {
   // sentence is set in the accent script face.
   const [headLead, ...headRest] = settings.hero_headline.split(". ");
   const headTail = headRest.join(". ");
+
+  const rating = averageRating(reviews);
+  const stats: { to: number; decimals?: number; suffix?: string; label: string }[] = [
+    { to: new Date().getFullYear() - 1999, label: "Years decorating, since 1999" },
+    { to: 5000, suffix: "+", label: "Weddings decorated" },
+    { to: services.length, label: "Services from one team" },
+    ...(rating
+      ? [{ to: rating, decimals: 1, suffix: "★", label: `Average of ${reviews.length} reviews` }]
+      : []),
+  ];
+
+  const usedPhotos = new Set<string>();
+  const servicePhotos = services.map((s) => {
+    const fits = SERVICE_PHOTO.find(([re]) => re.test(s.name))?.[1];
+    const photo =
+      fits &&
+      gallery.find(
+        (g) => fits(g) && !usedPhotos.has(g.id) && g.imagekit_url !== settings.hero_image_url,
+      );
+    if (photo) usedPhotos.add(photo.id);
+    return photo;
+  });
 
   return (
     <>
@@ -160,6 +197,19 @@ export default async function Home() {
           </div>
         </div>
 
+        {/* ── NUMBERS ──────────────────────────────────────────── */}
+        <section className="stats wrap reveal stagger" aria-label={`${SITE.name} in numbers`}>
+          {stats.map((s, i) => (
+            <div className="stat" key={s.label} style={{ "--i": i } as CSSProperties}>
+              <b>
+                <CountUp to={s.to} decimals={s.decimals} />
+                {s.suffix}
+              </b>
+              <p className="note">{s.label}</p>
+            </div>
+          ))}
+        </section>
+
         {/* ── THE WORK ─────────────────────────────────────────── */}
         <section id="work" className="band wrap">
           <header className="band-head reveal">
@@ -190,6 +240,16 @@ export default async function Home() {
           <div className="svc reveal stagger">
             {services.map((s, i) => (
               <div className="svc-item" key={s.id} style={{ "--i": i } as CSSProperties}>
+                {servicePhotos[i] && (
+                  <div className="svc-photo">
+                    <Image
+                      src={servicePhotos[i].imagekit_url}
+                      alt={servicePhotos[i].alt || servicePhotos[i].caption || ""}
+                      fill
+                      sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 33vw"
+                    />
+                  </div>
+                )}
                 <span className="n">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="h3">{s.name}</h3>
                 <p>{s.description}</p>

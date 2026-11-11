@@ -329,6 +329,24 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 .svc-item{background:var(--card); padding:26px 24px 28px; display:flex; flex-direction:column; gap:9px; position:relative}
 .svc-item .n{font:600 .66rem/1 "IBM Plex Mono", monospace; letter-spacing:.14em; color:var(--accent)}
 .svc-item p{color:var(--ink-soft); font-size:.96rem}
+/* A borrowed gallery photo, bled to the card's edges past its padding. The
+   height cap is for the stretched last card, which runs the full row. */
+.svc-photo{
+  margin:-26px -24px 12px; aspect-ratio:4/3; max-height:300px; overflow:hidden; background:var(--tile);
+}
+.svc-photo img{object-fit:cover; transition:transform .8s var(--settle)}
+.svc-item:hover .svc-photo img{transform:scale(1.05)}
+
+/* ---------- numbers ---------- */
+.stats{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:30px 24px;
+  padding-block:clamp(40px,6vw,68px); text-align:center; border-bottom:1px solid var(--line);
+}
+.stat b{
+  display:block; color:var(--accent); font-variant-numeric:tabular-nums lining-nums;
+  font:400 clamp(2.4rem,6vw,3.8rem)/1 "Libre Caslon Display", Georgia, serif;
+}
+.stat .note{margin:10px auto 0}
 
 /* ---------- gallery ---------- */
 .chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px}
@@ -721,7 +739,7 @@ html:has(.lightbox[open]){overflow:hidden}
 /* Photos settle from a slight zoom as they scroll into view. This uses the
    `scale` property, so the hover zoom on `transform` still layers on top. */
 @supports (animation-timeline:view()){
-  .gallery img{animation:unzoom linear both; animation-timeline:view(); animation-range:entry 0% cover 45%}
+  .gallery img, .svc-photo img{animation:unzoom linear both; animation-timeline:view(); animation-range:entry 0% cover 45%}
 }
 @keyframes unzoom{from{scale:1.14}to{scale:1}}
 
