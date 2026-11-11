@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getUser, isAdmin } from "@/lib/supabase/ssr";
+import { createSSRClient, getUser, isAdmin } from "@/lib/supabase/ssr";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { SignOutButton } from "@/components/admin/SignOutButton";
 import { SITE } from "@/lib/site";
@@ -33,9 +33,16 @@ export default async function DashLayout({ children }: { children: React.ReactNo
     );
   }
 
+  // Unanswered enquiries, shown as a badge on the Leads tab from every page.
+  const supabase = await createSSRClient();
+  const { count } = await supabase
+    .from("inquiries")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "new");
+
   return (
     <div className="adm">
-      <AdminNav email={user.email ?? ""} />
+      <AdminNav email={user.email ?? ""} newLeads={count ?? 0} />
       <main className="adm-main">{children}</main>
     </div>
   );

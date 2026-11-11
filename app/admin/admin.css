@@ -248,3 +248,92 @@ textarea.adm-inline{resize:vertical}
   background:var(--card); border:1px solid var(--line); border-radius:11px;
   padding:18px 20px; max-width:640px;
 }
+
+/* ============================================================
+   Upgrade layer — glass bar, pipeline tiles, search, motion.
+   Later in the file than the base rules, so these win on ties.
+   ============================================================ */
+
+/* ---------- bar ---------- */
+@supports (backdrop-filter:blur(6px)){
+  .adm-bar{background:color-mix(in srgb, var(--card) 82%, transparent); backdrop-filter:blur(12px)}
+}
+.adm-nav a{display:inline-flex; align-items:center; gap:7px}
+.adm-badge{
+  min-width:18px; height:18px; padding:0 5px; border-radius:999px;
+  display:inline-grid; place-items:center;
+  background:var(--accent); color:var(--accent-ink);
+  font:600 .6rem/1 "IBM Plex Mono", ui-monospace, monospace; letter-spacing:0;
+  animation:adm-pulse 2.4s ease-in-out infinite;
+}
+@keyframes adm-pulse{50%{box-shadow:0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent)}}
+/* Phones: the six tabs sit on one swipeable row instead of wrapping to three. */
+@media (max-width:720px){
+  .adm-bar-in{gap:10px 14px}
+  .adm-user{margin-left:auto}
+  .adm-nav{
+    order:3; flex:1 0 100%; flex-wrap:nowrap; overflow-x:auto; margin:0 -4px;
+    scrollbar-width:none; overscroll-behavior-x:contain;
+  }
+  .adm-nav::-webkit-scrollbar{display:none}
+  .adm-nav a{flex:none}
+}
+
+/* ---------- pipeline tiles ---------- */
+.adm-stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:24px}
+.adm-stat{
+  display:flex; flex-direction:column; gap:8px; text-decoration:none;
+  background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 18px 16px;
+  transition:translate .4s var(--settle), box-shadow .4s var(--settle), border-color .25s ease;
+}
+.adm-stat:hover{translate:0 -3px; box-shadow:var(--shadow); border-color:var(--accent-line)}
+.adm-stat b{
+  font:400 2.3rem/1 "Libre Caslon Display", Georgia, serif;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.adm-stat span{
+  font:500 .64rem/1.3 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);
+}
+.adm-stat.is-hot{border-color:var(--accent-line); background:color-mix(in srgb, var(--accent) 7%, var(--card))}
+.adm-stat.is-hot b{color:var(--accent)}
+
+/* ---------- lead search ---------- */
+.adm-search{
+  width:100%; max-width:420px; font:400 .95rem/1.4 "Instrument Sans", system-ui, sans-serif;
+  background:var(--card); color:var(--ink);
+  border:1px solid var(--line); border-radius:9px; padding:11px 14px;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.adm-search:focus{
+  outline:none; border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+/* ---------- leads: a status edge, and a body that opens rather than pops ---------- */
+.lead{border-left:3px solid var(--line); transition:border-color .2s ease, box-shadow .4s var(--settle)}
+.lead:hover, .lead.is-open{box-shadow:var(--shadow)}
+.lead.s-edge-new{border-left-color:var(--accent)}
+.lead.s-edge-quoted{border-left-color:var(--accent-line)}
+.lead.s-edge-won{border-left-color:#2E5E4E}
+.lead-body{animation:adm-open .45s var(--settle)}
+@keyframes adm-open{from{opacity:0; translate:0 -8px}}
+
+/* ---------- motion ---------- */
+/* Each page's blocks rise in on arrival, and rows and cards follow in turn.
+   Leads carry --i; grids and lists use sibling-index() where the browser has
+   it and simply arrive together where it does not. Uses `translate`, not
+   `transform`, so nothing here becomes a containing block for fixed children. */
+@keyframes adm-rise{from{opacity:0; translate:0 12px}}
+.adm-main > *{animation:adm-rise .6s var(--settle) both}
+.leads > .lead{animation:adm-rise .5s var(--settle) both; animation-delay:calc(min(var(--i, 0), 12) * 35ms)}
+.adm-grid > *, .adm-list > li, .adm-stats > *{animation:adm-rise .5s var(--settle) both}
+@supports (animation-delay:calc(sibling-index() * 1ms)){
+  .adm-grid > *, .adm-list > li, .adm-stats > *{animation-delay:calc(min(sibling-index(), 12) * 35ms)}
+}
+.adm-card, .adm-list li{transition:translate .4s var(--settle), box-shadow .4s var(--settle), border-color .25s ease}
+.adm-card:hover, .adm-list li:hover{translate:0 -3px; box-shadow:var(--shadow); border-color:var(--accent-line)}
+.adm-card img{transition:transform .6s var(--settle)}
+.adm-card:hover img{transform:scale(1.04)}
+.adm-mini, .adm-signout{transition:background .2s ease, color .2s ease, border-color .2s ease}
+.adm-ok{animation:adm-rise .4s var(--settle)}

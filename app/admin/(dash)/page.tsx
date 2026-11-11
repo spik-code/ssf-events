@@ -1,5 +1,7 @@
 import { createSSRClient } from "@/lib/supabase/ssr";
+import Link from "next/link";
 import { LeadsTable } from "@/components/admin/LeadsTable";
+import { CountUp } from "@/components/CountUp";
 import type { Inquiry } from "@/lib/admin-types";
 
 export const metadata = { title: "Leads" };
@@ -50,6 +52,31 @@ export default async function LeadsPage({
           </p>
         </div>
       </header>
+
+      {/* The pipeline at a glance; each tile is also the filter for its stage. */}
+      {all.length > 0 && (
+        <div className="adm-stats">
+          {(
+            [
+              ["Total enquiries", all.length, "/admin"],
+              ["Awaiting first reply", newCount, "/admin?status=new"],
+              ["Quoted", counts.quoted ?? 0, "/admin?status=quoted"],
+              ["Won", counts.won ?? 0, "/admin?status=won"],
+            ] as [string, number, string][]
+          ).map(([label, n, href]) => (
+            <Link
+              key={label}
+              href={href}
+              className={`adm-stat${href.endsWith("new") && n > 0 ? " is-hot" : ""}`}
+            >
+              <b>
+                <CountUp to={n} />
+              </b>
+              <span>{label}</span>
+            </Link>
+          ))}
+        </div>
+      )}
 
       {error && (
         <p className="adm-error" role="alert">

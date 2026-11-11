@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import { updateLeadStatus, deleteLead } from "@/app/admin/(dash)/actions";
 import {
@@ -57,6 +57,15 @@ export function LeadsTable({
   const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [q, setQ] = useState("");
+
+  // Search narrows whatever the status/source chips already loaded.
+  const needle = q.trim().toLowerCase();
+  const shown = needle
+    ? leads.filter((l) =>
+        [l.name, l.phone, l.email, l.event_location].some((v) => v?.toLowerCase().includes(needle)),
+      )
+    : leads;
 
   function setFilter(key: string, value: string) {
     const params = new URLSearchParams(window.location.search);
@@ -105,6 +114,14 @@ export function LeadsTable({
   return (
     <>
       <div className="adm-filters">
+        <input
+          className="adm-search"
+          type="search"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search name, phone, venue or email"
+          aria-label="Search leads"
+        />
         <div className="chips">
           <button
             className={`chip${activeStatus === "all" ? " is-on" : ""}`}
@@ -150,16 +167,20 @@ export function LeadsTable({
         </p>
       )}
 
-      {leads.length === 0 ? (
-        <p className="note adm-none">Nothing matches that filter.</p>
+      {shown.length === 0 ? (
+        <p className="note adm-none">Nothing matches that {q ? "search" : "filter"}.</p>
       ) : (
         <ul className="leads">
-          {leads.map((lead) => {
+          {shown.map((lead, i) => {
             const isOpen = open === lead.id;
             const stale = lead.status === "new" && hoursSince(lead.created_at) > 48;
 
             return (
-              <li key={lead.id} className={`lead${isOpen ? " is-open" : ""}`}>
+              <li
+                key={lead.id}
+                className={`lead s-edge-${lead.status}${isOpen ? " is-open" : ""}`}
+                style={{ "--i": i } as CSSProperties}
+              >
                 <button
                   className="lead-row"
                   onClick={() => setOpen(isOpen ? null : lead.id)}

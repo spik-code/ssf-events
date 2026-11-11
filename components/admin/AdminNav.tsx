@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignOutButton } from "./SignOutButton";
+import { ThemeSelect } from "../ThemeSelect";
 
 const LINKS = [
   { href: "/admin", label: "Leads", exact: true },
@@ -13,7 +14,7 @@ const LINKS = [
   { href: "/admin/bookings", label: "Bookings" },
 ];
 
-export function AdminNav({ email }: { email: string }) {
+export function AdminNav({ email, newLeads = 0 }: { email: string; newLeads?: number }) {
   const pathname = usePathname();
 
   return (
@@ -43,12 +44,18 @@ export function AdminNav({ email }: { email: string }) {
             return (
               <Link key={l.href} href={l.href} className={active ? "is-on" : ""}>
                 {l.label}
+                {l.exact && newLeads > 0 && (
+                  <span className="adm-badge" aria-label={`${newLeads} awaiting a first reply`}>
+                    {newLeads}
+                  </span>
+                )}
               </Link>
             );
           })}
         </nav>
 
         <div className="adm-user">
+          <ThemeSelect />
           <a href="/" target="_blank" rel="noopener noreferrer" className="adm-view">
             View site ↗
           </a>
