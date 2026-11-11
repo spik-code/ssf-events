@@ -4,6 +4,7 @@ import { useState, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ikVideo, ikPoster } from "@/lib/imagekit";
 import { addReel, updateReel, deleteReel } from "@/app/admin/(dash)/reels/actions";
+import { updateSetting } from "@/app/admin/(dash)/content/actions";
 import type { ReelItem } from "@/lib/types";
 
 interface IkAuth {
@@ -47,6 +48,8 @@ export function ReelsManager({ items }: { items: ReelItem[] }) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
+  // Only what was set during this visit; the saved value shows under Content.
+  const [hero, setHero] = useState("");
 
   /**
    * Upload straight from the browser to ImageKit, signed by our server.
@@ -100,6 +103,18 @@ export function ReelsManager({ items }: { items: ReelItem[] }) {
       try {
         await updateReel(id, p);
         router.refresh();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Could not save.");
+      }
+    });
+  }
+
+  function setAsHero(path: string) {
+    setError("");
+    startTransition(async () => {
+      try {
+        await updateSetting("hero_video_url", path);
+        setHero(path);
       } catch (e) {
         setError(e instanceof Error ? e.message : "Could not save.");
       }
@@ -183,6 +198,16 @@ export function ReelsManager({ items }: { items: ReelItem[] }) {
                     type="button"
                   >
                     {item.is_published ? "Live" : "Draft"}
+                  </button>
+                  {/* Plays this clip, muted and looped, behind the home page hero.
+                      Clear it again under Content → Hero video. */}
+                  <button
+                    className={`adm-mini${hero === item.imagekit_url ? " on" : ""}`}
+                    disabled={pending}
+                    onClick={() => setAsHero(item.imagekit_url)}
+                    type="button"
+                  >
+                    {hero === item.imagekit_url ? "In hero" : "Use in hero"}
                   </button>
                   <button
                     className="adm-mini"

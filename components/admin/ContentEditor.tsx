@@ -14,6 +14,7 @@ import type { Service } from "@/lib/types";
 const TEXT_SETTINGS: { key: string; label: string; multiline?: boolean; help?: string }[] = [
   { key: "hero_headline", label: "Hero headline", help: "Split on the first '. ' — the second sentence is styled in the accent script." },
   { key: "hero_subcopy", label: "Hero sub-copy", multiline: true },
+  { key: "hero_video_url", label: "Hero video", help: "A short muted loop behind the hero — set it from the Reels page, or paste an ImageKit path or full .mp4 URL. Empty shows the photo only." },
   { key: "contact_phone", label: "Phone (displayed)" },
   { key: "whatsapp_number", label: "WhatsApp number", help: "Digits only, with country code. e.g. 919353568207" },
   { key: "contact_email", label: "Email" },

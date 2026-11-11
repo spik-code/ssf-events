@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
+import { ikVideo } from "@/lib/imagekit";
 
 /** The crest, the same asset the About section badges. Dark indigo, gold ring. */
 const CREST = "/ssf/brand/logo-v2.webp";
@@ -27,6 +28,7 @@ const CREST = "/ssf/brand/logo-v2.webp";
  */
 export function ScrollExpandHero({
   bgSrc,
+  videoSrc,
   eyebrow,
   headLead,
   headTail,
@@ -34,6 +36,9 @@ export function ScrollExpandHero({
 }: {
   /** Background photograph — an ImageKit path from site_settings. */
   bgSrc: string;
+  /** Optional muted loop over the photograph — site_settings.hero_video_url.
+   *  Skipped under reduced motion and for visitors on data saver. */
+  videoSrc?: string;
   eyebrow: ReactNode;
   /** Headline split at the sentence break: lead stays roman, tail is script. */
   headLead: string;
@@ -44,6 +49,7 @@ export function ScrollExpandHero({
   const sectionRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [reduced, setReduced] = useState(false);
+  const [playVideo, setPlayVideo] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -86,9 +92,11 @@ export function ScrollExpandHero({
       if (reduce.matches) {
         section.style.setProperty("--p", "0");
         setReduced(true);
+        setPlayVideo(false);
         return;
       }
       setReduced(false);
+      setPlayVideo(!(navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
       paint();
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", onScroll, { passive: true });
@@ -113,6 +121,11 @@ export function ScrollExpandHero({
         <div className="xhero-stage">
           <div className="xhero-media" aria-hidden="true">
             <Image src={bgSrc} alt="" fill priority sizes="100vw" style={{ objectFit: "cover" }} />
+            {/* Mounted after hydration, so the photo stays the first paint and
+                shows through until the video has a frame to draw. */}
+            {playVideo && videoSrc && (
+              <video src={ikVideo(videoSrc)} autoPlay muted loop playsInline preload="metadata" />
+            )}
           </div>
 
           <p className="eyebrow xhero-eyebrow">{eyebrow}</p>

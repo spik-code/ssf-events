@@ -56,7 +56,25 @@ const SERVICE_PHOTO: [RegExp, (g: GalleryItem) => boolean][] = [
   [/wedding|stage/i, (g) => g.category === "wedding"],
 ];
 
-const PLACES ="Kolar  ·  Bengaluru  ·  Bangarpet  ·  Avani  ·  Tumkur  ·  across Karnataka";
+// How a booking runs, drawn from what the Services, About and Enquire copy
+// already promise.
+const STEPS: [title: string, text: string][] = [
+  [
+    "Tell us about the function",
+    "Send the date, the hall, a rough guest count and a couple of reference photos — by the form, a call or WhatsApp.",
+  ],
+  ["We quote for your hall", "A quote built for exactly what that date and that venue need."],
+  [
+    "The design is settled",
+    "Stage, flowers, drapes, lighting and sound are agreed with one point of contact, so nothing falls between vendors.",
+  ],
+  [
+    "Built that morning, struck that night",
+    "The people who designed your stage build it on the day and take it down after the function.",
+  ],
+];
+
+const PLACES = "Kolar  ·  Bengaluru  ·  Bangarpet  ·  Avani  ·  Tumkur  ·  across Karnataka";
 
 export default async function Home() {
   const [gallery, services, settings, reviews] = await Promise.all([
@@ -163,6 +181,7 @@ export default async function Home() {
             over to. */}
         <ScrollExpandHero
           bgSrc={settings.hero_image_url}
+          videoSrc={settings.hero_video_url}
           eyebrow={
             <>
               <span className="tick" /> Since 1999 &nbsp;·&nbsp; 5,000+ weddings &nbsp;·&nbsp;
@@ -255,6 +274,29 @@ export default async function Home() {
                 <p>{s.description}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ── HOW IT WORKS ─────────────────────────────────────── */}
+        {/* The rail down the steps fills in as the list scrolls through. */}
+        <section id="how" className="band wrap">
+          <div className="how">
+            <header className="band-head reveal">
+              <p className="eyebrow">
+                <span className="tick" /> How it works
+              </p>
+              <h2 className="h2">From first call to the last flower</h2>
+              <p className="note">Four steps, one team, one point of contact throughout.</p>
+            </header>
+            <ol className="steps reveal stagger">
+              {STEPS.map(([title, text], i) => (
+                <li className="step" key={title} style={{ "--i": i } as CSSProperties}>
+                  <span className="n">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="h3">{title}</h3>
+                  <p>{text}</p>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
