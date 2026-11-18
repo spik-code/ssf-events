@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { unwrap } from "@/lib/action-result";
 import { addExpense, deleteExpense } from "@/app/admin/(dash)/expenses/actions";
 
 export function ExpenseForm({ bookings }: { bookings: { id: string; label: string }[] }) {
@@ -12,7 +13,7 @@ export function ExpenseForm({ bookings }: { bookings: { id: string; label: strin
     setError("");
     start(async () => {
       try {
-        await addExpense(f);
+        unwrap(await addExpense(f));
         setF({ ...f, label: "", vendor: "", amount: 0 });
       } catch (e) {
         setError((e as Error).message);
@@ -42,7 +43,7 @@ export function ExpenseForm({ bookings }: { bookings: { id: string; label: strin
 export function DeleteExpense({ id }: { id: string }) {
   const [pending, start] = useTransition();
   return (
-    <button className="btn btn-ghost" disabled={pending} aria-label="Delete expense" onClick={() => start(() => deleteExpense(id))}>
+    <button className="btn btn-ghost" disabled={pending} aria-label="Delete expense" onClick={() => start(async () => void (await deleteExpense(id)))}>
       ✕
     </button>
   );

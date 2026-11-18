@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { saveDocument, deleteDocument, quotationToInvoice } from "@/app/admin/(dash)/documents/actions";
 import { inr, totals, type Doc, type DocItem, type DocKind } from "@/lib/documents";
+import { unwrap } from "@/lib/action-result";
 import { sharePdf } from "@/lib/pdf";
 
 export type DocDraft = Omit<Doc, "id" | "number" | "created_at"> & { id?: string; number?: string; created_at?: string };
@@ -32,7 +33,7 @@ export function DocEditor({ initial }: { initial: DocDraft }) {
 
   /** Saves, then reloads the saved row so the PDF carries its real number and date. */
   const save = async () => {
-    const id = await saveDocument({ ...d, kind: d.kind as DocKind });
+    const id = unwrap(await saveDocument({ ...d, kind: d.kind as DocKind }));
     if (!d.id) router.replace(`/admin/documents/${id}`);
     else router.refresh();
     return id;
@@ -118,7 +119,7 @@ export function DocEditor({ initial }: { initial: DocDraft }) {
           </button>
         )}
         {d.id && d.kind === "quotation" && (
-          <button className="btn btn-ghost" disabled={pending} onClick={() => run(async () => router.push(`/admin/documents/${await quotationToInvoice(d.id!)}`))}>
+          <button className="btn btn-ghost" disabled={pending} onClick={() => run(async () => router.push(`/admin/documents/${unwrap(await quotationToInvoice(d.id!))}`))}>
             Make bill
           </button>
         )}
@@ -129,7 +130,7 @@ export function DocEditor({ initial }: { initial: DocDraft }) {
             onClick={() => {
               if (!confirm("Delete this document?")) return;
               run(async () => {
-                await deleteDocument(d.id!);
+                unwrap(await deleteDocument(d.id!));
                 router.push("/admin/documents");
               });
             }}

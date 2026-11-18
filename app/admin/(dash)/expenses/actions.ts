@@ -3,13 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { createSSRClient, isAdmin } from "@/lib/supabase/ssr";
 import { clean } from "@/lib/sanitize";
+import { attempt } from "@/lib/action-result";
 
 async function requireAdmin() {
   if (!(await isAdmin())) throw new Error("Not authorised.");
   return createSSRClient();
 }
 
-export async function addExpense(f: {
+async function add(f: {
   label: string;
   vendor: string;
   amount: number;
@@ -33,9 +34,16 @@ export async function addExpense(f: {
   revalidatePath("/admin/expenses");
 }
 
-export async function deleteExpense(id: string) {
+async function remove(id: string) {
   const supabase = await requireAdmin();
   const { error } = await supabase.from("expenses").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/expenses");
+}
+
+export async function addExpense(f: Parameters<typeof add>[0]) {
+  return attempt(() => add(f));
+}
+export async function deleteExpense(id: string) {
+  return attempt(() => remove(id));
 }

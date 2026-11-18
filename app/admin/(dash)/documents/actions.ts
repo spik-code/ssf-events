@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createSSRClient, isAdmin } from "@/lib/supabase/ssr";
 import { clean, cleanMultiline } from "@/lib/sanitize";
+import { attempt } from "@/lib/action-result";
 import type { DocItem, DocKind } from "@/lib/documents";
 
 async function requireAdmin() {
@@ -28,7 +29,7 @@ export interface DocInput {
 }
 
 /** Creates or updates a quotation/bill; returns its id. Numbers: Q-2026-001 / INV-2026-001. */
-export async function saveDocument(input: DocInput): Promise<string> {
+async function save(input: DocInput): Promise<string> {
   const supabase = await requireAdmin();
   const kind: DocKind = input.kind === "invoice" ? "invoice" : "quotation";
   const client_name = clean(input.client_name, 120);
@@ -79,7 +80,7 @@ export async function saveDocument(input: DocInput): Promise<string> {
   throw new Error("Could not allocate a number. Try again.");
 }
 
-export async function deleteDocument(id: string) {
+async function remove(id: string) {
   const supabase = await requireAdmin();
   const { error } = await supabase.from("documents").delete().eq("id", id);
   if (error) throw new Error(error.message);
@@ -87,9 +88,19 @@ export async function deleteDocument(id: string) {
 }
 
 /** Copies a quotation into a new invoice (same items, nothing paid yet). */
-export async function quotationToInvoice(id: string): Promise<string> {
+async function toInvoice(id: string): Promise<string> {
   const supabase = await requireAdmin();
   const { data: q, error } = await supabase.from("documents").select("*").eq("id", id).single();
   if (error || !q) throw new Error("Quotation not found.");
-  return saveDocument({ ...q, kind: "invoice", id: undefined, paid: 0 });
+  return save({ ...q, kind: "invoice", id: undefined, paid: 0 });
+}
+
+export async function saveDocument(input: DocInput) {
+  return attempt(() => save(input));
+}
+export async function deleteDocument(id: string) {
+  return attempt(() => remove(id));
+}
+export async function quotationToInvoice(id: string) {
+  return attempt(() => toInvoice(id));
 }
