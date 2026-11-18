@@ -226,7 +226,7 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
 }
 .xhero-card::before{
   content:""; position:absolute; inset:-14% -8%;
-  background:radial-gradient(closest-side, rgb(0 13 65 / .94), rgb(0 13 65 / .78) 58%, transparent);
+  background:radial-gradient(closest-side, rgb(0 13 65 / .6), rgb(0 13 65 / .38) 58%, transparent);
 }
 .xhero-card img{z-index:1}
 
