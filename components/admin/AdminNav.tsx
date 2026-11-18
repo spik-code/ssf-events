@@ -24,20 +24,8 @@ export function AdminNav({ email, newLeads = 0 }: { email: string; newLeads?: nu
     <header className="adm-bar">
       <div className="adm-bar-in">
         <Link className="adm-mark" href="/admin">
-          <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-            <circle cx="20" cy="20" r="18" stroke="var(--gold)" strokeWidth="1.4" />
-            <text
-              x="20"
-              y="24.5"
-              textAnchor="middle"
-              fontFamily="IBM Plex Mono, monospace"
-              fontSize="12"
-              fontWeight="600"
-              fill="var(--gold)"
-            >
-              SSF
-            </text>
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/logo-ring.png" alt="" width={34} height={34} />
           <b>Admin</b>
         </Link>
 

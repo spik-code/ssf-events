@@ -42,7 +42,7 @@
   display:flex; align-items:center; gap:20px; flex-wrap:wrap;
 }
 .adm-mark{display:flex; align-items:center; gap:10px; text-decoration:none}
-.adm-mark svg{width:26px; height:26px; flex:none}
+.adm-mark img{width:34px; height:34px; flex:none; object-fit:contain}
 .adm-mark b{
   font:600 .78rem/1 "IBM Plex Mono", ui-monospace, monospace;
   letter-spacing:.2em; text-transform:uppercase;
