@@ -4,11 +4,29 @@ import { TERMS, inr, totals, type Doc } from "@/lib/documents";
 const fmt = (iso: string) =>
   new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 
+/** The transparent gold logo, fetched once and kept as a data URL for jsPDF. */
+let logo: Promise<string> | undefined;
+function loadLogo() {
+  logo ??= fetch("/brand/logo-transparent-sm.png")
+    .then((r) => r.blob())
+    .then(
+      (b) =>
+        new Promise<string>((res, rej) => {
+          const fr = new FileReader();
+          fr.onload = () => res(fr.result as string);
+          fr.onerror = () => rej(fr.error);
+          fr.readAsDataURL(b);
+        }),
+    );
+  return logo;
+}
+
 /** Builds the PDF in the browser (jsPDF loads on demand). English only: the
  *  built-in PDF fonts have no Kannada glyphs. shortcut: embed a Noto Kannada font if Kannada items are needed. */
 export async function buildPdf(d: Doc): Promise<File> {
   const { jsPDF } = await import("jspdf");
   const pdf = new jsPDF({ unit: "mm", format: "a4" });
+  const logoUrl = await loadLogo().catch(() => null); // a missing logo must not block the PDF
   const W = 210;
   const M = 14;
   const NAVY: [number, number, number] = [1, 13, 64];
@@ -18,8 +36,12 @@ export async function buildPdf(d: Doc): Promise<File> {
 
   pdf.setFillColor(...NAVY).rect(0, 0, W, 30, "F");
   pdf.setFillColor(...GOLD).rect(0, 30, W, 1.2, "F");
-  pdf.setTextColor(246, 239, 226).setFont("times", "normal").setFontSize(22).text(SITE.name, M, 15);
-  pdf.setFontSize(9).setTextColor(...GOLD).text(SITE.legalName, M, 22);
+  if (logoUrl) {
+    pdf.addImage(logoUrl, "PNG", M - 3, 2, 26 * 1.44, 26); // artwork ratio 1.44:1
+  } else {
+    pdf.setTextColor(246, 239, 226).setFont("times", "normal").setFontSize(22).text(SITE.name, M, 15);
+    pdf.setFontSize(9).setTextColor(...GOLD).text(SITE.legalName, M, 22);
+  }
   pdf.setFont("helvetica", "normal").setFontSize(8.5).setTextColor(217, 214, 228);
   pdf.text([SITE.phone, SITE.email, "Vadagur, Kolar 563103"], W - M, 11, { align: "right" });
 
