@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { ikVideo } from "@/lib/imagekit";
 
-/** The crest, the same asset the About section badges. Dark indigo, gold ring. */
-const CREST = "/ssf/brand/logo-v2.webp";
+/** The crest, the same asset the About section badges. Transparent gold-on-nothing; the card behind it supplies a dark glow. */
+const CREST = "/brand/logo-transparent.webp";
 
 /**
  * The hero, choreographed by scroll position: the SSF crest starts as a small
@@ -120,7 +120,7 @@ export function ScrollExpandHero({
       <div className="xhero-track" ref={trackRef}>
         <div className="xhero-stage">
           <div className="xhero-media" aria-hidden="true">
-            <Image src={bgSrc} alt="" fill priority sizes="100vw" style={{ objectFit: "cover" }} />
+            <Image src={bgSrc} alt="" fill priority sizes="100vw" style={{ objectFit: "contain" }} />
             {/* Mounted after hydration, so the photo stays the first paint and
                 shows through until the video has a frame to draw. */}
             {playVideo && videoSrc && (

@@ -220,9 +220,15 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
      the logo changes. Background is the artwork's navy, so no seam shows. */
   aspect-ratio:1.44;
   transform:translate(-50%, calc(-50% - 7dvh * (1 - var(--p))));
-  border:1px solid var(--line); border-radius:calc(14px + 8px * var(--p));
-  overflow:hidden; background:#000D41; box-shadow:var(--shadow);
+  /* Transparent logo: no box. A soft navy glow behind it keeps the white
+     wordmark readable on the light theme as well as the dark. */
+  background:none; border:0; box-shadow:none; overflow:visible;
 }
+.xhero-card::before{
+  content:""; position:absolute; inset:-14% -8%;
+  background:radial-gradient(closest-side, rgb(0 13 65 / .94), rgb(0 13 65 / .78) 58%, transparent);
+}
+.xhero-card img{z-index:1}
 
 .xhero-eyebrow,
 .xhero-foot{position:relative; z-index:2}
@@ -297,7 +303,6 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
      as deliberate where a small floating card looks stranded. */
   .xhero-card{
     --w0:clamp(118px,40vw,178px); --w1:100vw;
-    border-radius:calc(16px * (1 - var(--p))); border-left:0; border-right:0;
   }
   .xhero-lead{transform:translateX(calc(var(--p) * -62vw))}
   .xhero-tail{transform:translateX(calc(var(--p) * 62vw))}
