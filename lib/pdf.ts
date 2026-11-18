@@ -21,7 +21,7 @@ export async function buildPdf(d: Doc): Promise<File> {
   pdf.setTextColor(246, 239, 226).setFont("times", "normal").setFontSize(22).text(SITE.name, M, 15);
   pdf.setFontSize(9).setTextColor(...GOLD).text(SITE.legalName, M, 22);
   pdf.setFont("helvetica", "normal").setFontSize(8.5).setTextColor(217, 214, 228);
-  pdf.text([SITE.phone, SITE.email, `${SITE.base} · ${SITE.serving}`], W - M, 11, { align: "right" });
+  pdf.text([SITE.phone, SITE.email, "Vadagur, Kolar 563103"], W - M, 11, { align: "right" });
 
   pdf.setTextColor(...NAVY).setFont("times", "normal").setFontSize(19).text(isInv ? "Invoice" : "Quotation", M, 44);
   pdf.setFont("helvetica", "normal").setFontSize(9).setTextColor(93, 96, 117);
