@@ -33,8 +33,7 @@ export function totals(d: Pick<Doc, "items" | "discount" | "paid">) {
 export const TERMS: Record<DocKind, string[]> = {
   quotation: [
     "Booking is confirmed on receipt of the 50% advance. Items are subject to availability until then.",
-    "This quotation is valid for 15 days from the date above.",
-    "The advance is non-refundable once vendors are booked for the date.",
+    "This quotation is valid for 30 days from the date above.",
     "Extra time or additional items are charged separately.",
   ],
   invoice: [
