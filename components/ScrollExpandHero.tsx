@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { ikVideo } from "@/lib/imagekit";
 
-/** The crest, the same asset the About section badges. Transparent gold-on-nothing; the card behind it supplies a dark glow. */
-const CREST = "/brand/logo-transparent.webp";
+/** The crest, the same asset the About section badges. Transparent, self-outlined artwork: no card behind it. */
+const CREST = "/brand/logo-new.webp";
 
 /**
  * The hero, choreographed by scroll position: the SSF crest starts as a small

@@ -212,21 +212,17 @@ em.script{font-family:"Libre Caslon Text", Georgia, serif; font-style:italic; co
    outgrow the viewport. */
 .xhero-card{
   --w0:clamp(178px,46vw,286px);
-  --w1:min(92vw, 1180px, calc(74dvh * 1.44));
+  --w1:min(92vw, 1180px, calc(74dvh * 1.504));
   position:absolute; top:50%; left:50%; z-index:1;
   width:calc(var(--w0) + (var(--w1) - var(--w0)) * var(--p));
-  /* The artwork's own ratio (1254×871), so object-fit:cover crops nothing and
+  /* The artwork's own ratio (2397×1594), so object-fit:cover crops nothing and
      the ring, wordmark and stars all stay in frame. Keep the two in step if
      the logo changes. Background is the artwork's navy, so no seam shows. */
-  aspect-ratio:1.44;
+  aspect-ratio:1.504;
   transform:translate(-50%, calc(-50% - 7dvh * (1 - var(--p))));
-  /* Transparent logo: no box. A soft navy glow behind it keeps the white
-     wordmark readable on the light theme as well as the dark. */
+  /* Transparent logo: no box. The artwork carries its own dark outline, so the
+     white wordmark reads on the light theme and the dark one without a backing. */
   background:none; border:0; box-shadow:none; overflow:visible;
-}
-.xhero-card::before{
-  content:""; position:absolute; inset:-14% -8%;
-  background:radial-gradient(closest-side, rgb(0 13 65 / .6), rgb(0 13 65 / .38) 58%, transparent);
 }
 .xhero-card img{z-index:1}
 
@@ -460,10 +456,8 @@ html:has(.lightbox[open]){overflow:hidden}
 /* ---------- badge / about ---------- */
 .about{display:grid; grid-template-columns:minmax(0,300px) 1fr; gap:44px; align-items:center}
 @media (max-width:760px){ .about{grid-template-columns:1fr; gap:28px} }
-.badge{
-  border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#141425;
-  box-shadow:var(--shadow);
-}
+/* The logo is transparent and outlined, so it floats with no card behind it. */
+.badge{filter:drop-shadow(0 10px 18px rgb(0 0 0 / .18))}
 .about p + p{margin-top:14px}
 .about .sig{
   margin-top:20px; font:500 .7rem/1.6 "IBM Plex Mono", monospace;

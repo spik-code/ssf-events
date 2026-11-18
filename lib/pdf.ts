@@ -7,7 +7,7 @@ const fmt = (iso: string) =>
 /** The transparent gold logo, fetched once and kept as a data URL for jsPDF. */
 let logo: Promise<string> | undefined;
 function loadLogo() {
-  logo ??= fetch("/brand/logo-transparent-sm.png")
+  logo ??= fetch("/brand/logo-new-sm.png")
     .then((r) => r.blob())
     .then(
       (b) =>
@@ -37,7 +37,7 @@ export async function buildPdf(d: Doc): Promise<File> {
   pdf.setFillColor(...NAVY).rect(0, 0, W, 30, "F");
   pdf.setFillColor(...GOLD).rect(0, 30, W, 1.2, "F");
   if (logoUrl) {
-    pdf.addImage(logoUrl, "PNG", M - 3, 2, 26 * 1.44, 26); // artwork ratio 1.44:1
+    pdf.addImage(logoUrl, "PNG", M - 3, 2, 26 * 1.504, 26); // artwork ratio 1.504:1
   } else {
     pdf.setTextColor(246, 239, 226).setFont("times", "normal").setFontSize(22).text(SITE.name, M, 15);
     pdf.setFontSize(9).setTextColor(...GOLD).text(SITE.legalName, M, 22);

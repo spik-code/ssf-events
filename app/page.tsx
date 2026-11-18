@@ -314,10 +314,10 @@ export default async function Home() {
           <div className="about">
             <div className="badge reveal">
               <Image
-                src="/ssf/brand/logo-v2.webp"
+                src="/brand/logo-new.webp"
                 alt={`${SITE.name} — ${SITE.legalName} crest`}
                 width={600}
-                height={417}
+                height={399}
                 sizes="(max-width: 760px) 90vw, 300px"
                 style={{ width: "100%", height: "auto" }}
               />
