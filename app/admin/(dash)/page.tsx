@@ -23,11 +23,12 @@ export default async function LeadsPage({
   }
   if (source) query = query.eq("referral_source", source);
 
-  const { data, error } = await query;
+  // Counts for the filter chips come from the unfiltered set; fetch both together.
+  const [{ data, error }, { data: allRows }] = await Promise.all([
+    query,
+    supabase.from("inquiries").select("status, referral_source"),
+  ]);
   const leads = (data ?? []) as Inquiry[];
-
-  // Counts for the filter chips come from the unfiltered set.
-  const { data: allRows } = await supabase.from("inquiries").select("status, referral_source");
   const all = (allRows ?? []) as { status: string; referral_source: string | null }[];
 
   const counts = STATUSES.reduce<Record<string, number>>((acc, s) => {

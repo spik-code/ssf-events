@@ -18,7 +18,13 @@ export default async function DashLayout({ children }: { children: React.ReactNo
   const user = await getUser();
   if (!user) redirect("/admin/login");
 
-  if (!(await isAdmin())) {
+  // Roster check and the badge count are independent: run them together.
+  const supabase = await createSSRClient();
+  const [admin, { count }] = await Promise.all([
+    isAdmin(),
+    supabase.from("inquiries").select("*", { count: "exact", head: true }).eq("status", "new"),
+  ]);
+  if (!admin) {
     return (
       <main className="auth">
         <div className="auth-card">
@@ -33,13 +39,7 @@ export default async function DashLayout({ children }: { children: React.ReactNo
     );
   }
 
-  // Unanswered enquiries, shown as a badge on the Leads tab from every page.
-  const supabase = await createSSRClient();
-  const { count } = await supabase
-    .from("inquiries")
-    .select("*", { count: "exact", head: true })
-    .eq("status", "new");
-
+  // `count` (unanswered enquiries) is the badge on the Leads tab, from every page.
   return (
     <div className="adm">
       <AdminNav email={user.email ?? ""} newLeads={count ?? 0} />

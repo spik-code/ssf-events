@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 /**
  * Supabase client for Server Components, Server Actions and route handlers.
@@ -35,13 +36,14 @@ export async function createSSRClient() {
 }
 
 /** The signed-in user, or null. */
-export async function getUser() {
+// cache(): the layout and the page ask in the same render; one network call, not several.
+export const getUser = cache(async () => {
   const supabase = await createSSRClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   return user;
-}
+});
 
 /**
  * True when the signed-in user is on the admin roster.
@@ -49,12 +51,10 @@ export async function getUser() {
  * Checked by querying `admin_users` — RLS only returns a row to an actual
  * admin, so a non-admin gets nothing back and is refused.
  */
-export async function isAdmin(): Promise<boolean> {
-  const supabase = await createSSRClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export const isAdmin = cache(async (): Promise<boolean> => {
+  const user = await getUser();
   if (!user) return false;
+  const supabase = await createSSRClient();
 
   const { data, error } = await supabase
     .from("admin_users")
@@ -63,4 +63,4 @@ export async function isAdmin(): Promise<boolean> {
     .maybeSingle();
 
   return !error && Boolean(data);
-}
+});
