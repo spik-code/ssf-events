@@ -3,8 +3,17 @@ import { createServiceClient } from "@/lib/supabase/server";
 
 /** Sends a notification to every subscribed owner device. Never throws. */
 export async function pushToOwners(payload: { title: string; body: string; url?: string }) {
-  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-  const priv = process.env.VAPID_PRIVATE_KEY;
+  try {
+    await send(payload);
+  } catch (err) {
+    // A bad VAPID key or a DB hiccup must never fail the enquiry that triggered this.
+    console.error("[push] failed:", err);
+  }
+}
+
+async function send(payload: { title: string; body: string; url?: string }) {
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY?.trim();
+  const priv = process.env.VAPID_PRIVATE_KEY?.trim();
   const db = createServiceClient();
   if (!pub || !priv || !db) return;
 
