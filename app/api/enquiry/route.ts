@@ -3,6 +3,7 @@ import { createServerClient, createServiceClient } from "@/lib/supabase/server";
 import type { EventType } from "@/lib/types";
 import { clean, cleanMultiline } from "@/lib/sanitize";
 import { PRIVACY_VERSION } from "@/lib/legal";
+import { pushToOwners } from "@/lib/push";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -177,7 +178,10 @@ export async function POST(request: Request) {
     );
   }
 
-  await notify(row);
+  await Promise.all([
+    notify(row),
+    pushToOwners({ title: `New enquiry — ${name}`, body: `${event_type}${event_date ? ` · ${event_date}` : ""} · ${phone}`, url: "/admin" }),
+  ]);
 
   return NextResponse.json({
     ok: true,

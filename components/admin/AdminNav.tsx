@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignOutButton } from "./SignOutButton";
 import { ThemeSelect } from "../ThemeSelect";
+import { PushToggle } from "./PushToggle";
 
 const LINKS = [
   { href: "/admin", label: "Leads", exact: true },
@@ -11,7 +12,9 @@ const LINKS = [
   { href: "/admin/reels", label: "Reels" },
   { href: "/admin/content", label: "Content" },
   { href: "/admin/reviews", label: "Reviews" },
-  { href: "/admin/bookings", label: "Bookings" },
+  { href: "/admin/documents", label: "Quotes & bills" },
+  { href: "/admin/bookings", label: "Calendar" },
+  { href: "/admin/expenses", label: "Expenses" },
 ];
 
 export function AdminNav({ email, newLeads = 0 }: { email: string; newLeads?: number }) {
@@ -55,6 +58,7 @@ export function AdminNav({ email, newLeads = 0 }: { email: string; newLeads?: nu
         </nav>
 
         <div className="adm-user">
+          <PushToggle />
           <ThemeSelect />
           <a href="/" target="_blank" rel="noopener noreferrer" className="adm-view">
             View site ↗

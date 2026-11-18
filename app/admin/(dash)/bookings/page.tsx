@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createSSRClient } from "@/lib/supabase/ssr";
 import type { Booking } from "@/lib/admin-types";
 
@@ -8,7 +9,8 @@ interface BookingRow extends Booking {
   inquiries: { name: string; phone: string; event_type: string } | null;
 }
 
-export default async function BookingsPage() {
+export default async function BookingsPage({ searchParams }: { searchParams: Promise<{ m?: string }> }) {
+  const { m } = await searchParams;
   const supabase = await createSSRClient();
 
   const { data } = await supabase
@@ -25,6 +27,14 @@ export default async function BookingsPage() {
     return acc;
   }, {});
 
+  // Month grid (?m=YYYY-MM): days with a booking are marked, 2+ turn red.
+  const now = new Date();
+  const [yy, mm] = /^\d{4}-\d{2}$/.test(m ?? "") ? m!.split("-").map(Number) : [now.getFullYear(), now.getMonth() + 1];
+  const first = new Date(yy, mm - 1, 1);
+  const days = new Date(yy, mm, 0).getDate();
+  const ym = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+  const cells = [...Array(first.getDay()).fill(null), ...Array.from({ length: days }, (_, i) => i + 1)];
+
   const upcoming = bookings.filter((b) => new Date(b.confirmed_date) >= new Date());
 
   return (
@@ -37,6 +47,22 @@ export default async function BookingsPage() {
             : `${bookings.length} total · ${upcoming.length} upcoming`}
         </p>
       </header>
+
+      <section className="cal" aria-label="Booking calendar">
+        <div className="cal-nav">
+          <Link href={`/admin/bookings?m=${ym(new Date(yy, mm - 2, 1))}`} aria-label="Previous month">‹</Link>
+          <b>{first.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}</b>
+          <Link href={`/admin/bookings?m=${ym(new Date(yy, mm, 1))}`} aria-label="Next month">›</Link>
+        </div>
+        <div className="cal-grid">
+          {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => <span key={i} className="cal-dow">{d}</span>)}
+          {cells.map((day, i) => {
+            if (!day) return <span key={i} />;
+            const n = byDate[`${yy}-${String(mm).padStart(2, "0")}-${String(day).padStart(2, "0")}`] ?? 0;
+            return <span key={i} className={`cal-day${n ? " has" : ""}${n > 1 ? " clash" : ""}`}>{day}</span>;
+          })}
+        </div>
+      </section>
 
       {bookings.length === 0 ? (
         <div className="adm-empty">

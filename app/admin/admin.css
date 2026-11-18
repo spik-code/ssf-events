@@ -337,3 +337,17 @@ textarea.adm-inline{resize:vertical}
 .adm-card:hover img{transform:scale(1.04)}
 .adm-mini, .adm-signout{transition:background .2s ease, color .2s ease, border-color .2s ease}
 .adm-ok{animation:adm-rise .4s var(--settle)}
+
+/* Owner app: document editor + booking calendar */
+.doc-item{display:grid; grid-template-columns:1fr 64px 92px auto auto; gap:8px; align-items:center}
+.doc-item input{min-width:0; width:100%}
+@media (max-width:560px){ .doc-item{grid-template-columns:1fr 1fr; } .doc-item input:first-child{grid-column:1 / -1} }
+.doc-total{display:flex; flex-wrap:wrap; gap:6px 18px}
+.cal{max-width:420px; margin-bottom:28px}
+.cal-nav{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
+.cal-nav a{padding:6px 14px; font-size:1.3rem}
+.cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center}
+.cal-dow{font-size:.72rem; opacity:.6}
+.cal-day{padding:8px 0; border-radius:8px}
+.cal-day.has{background:var(--accent); color:var(--accent-ink); font-weight:600}
+.cal-day.clash{background:#b4322a; color:#fff}

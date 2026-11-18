@@ -2,6 +2,7 @@
 
 import { useState, useTransition, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { updateLeadStatus, deleteLead } from "@/app/admin/(dash)/actions";
 import {
   STATUS_FLOW,
@@ -275,6 +276,9 @@ export function LeadsTable({
                         <ChatIcon />
                         WhatsApp
                       </a>
+                      <Link className="btn btn-ghost" href={`/admin/documents/new?kind=quotation&lead=${lead.id}`}>
+                        Quote
+                      </Link>
                       <a className="btn btn-ghost" href={`tel:${lead.phone.replace(/[^\d+]/g, "")}`}>
                         <PhoneIcon />
                         Call
